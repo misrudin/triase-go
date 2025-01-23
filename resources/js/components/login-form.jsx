@@ -9,8 +9,19 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useForm } from "@inertiajs/react";
+import ErrorMessage from "./ui/error-message";
 
 export function LoginForm({ className, ...props }) {
+    const { data, setData, post, processing, errors } = useForm({
+        email: "",
+        password: "",
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        post(route("admin.login"));
+    };
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card>
@@ -21,17 +32,23 @@ export function LoginForm({ className, ...props }) {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="flex flex-col gap-6">
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
                                     id="email"
                                     type="email"
+                                    name='email'
                                     placeholder="m@example.com"
                                     required
                                     className="h-12"
+                                    value={data.email}
+                                    onChange={(e) =>
+                                        setData("email", e.target.value)
+                                    }
                                 />
+                                <ErrorMessage message={errors?.email} />
                             </div>
                             <div className="grid gap-2">
                                 <div className="flex items-center">
@@ -40,10 +57,17 @@ export function LoginForm({ className, ...props }) {
                                 <Input
                                     id="password"
                                     type="password"
+                                    name='password'
+                                    autoComplete="on"
                                     required
                                     className="h-12"
                                     placeholder="Masukan password"
+                                    value={data.password}
+                                    onChange={(e) =>
+                                        setData("password", e.target.value)
+                                    }
                                 />
+                                <ErrorMessage message={errors?.password} />
                                 <div className="flex items-center">
                                     <a
                                         href="#"
@@ -53,7 +77,11 @@ export function LoginForm({ className, ...props }) {
                                     </a>
                                 </div>
                             </div>
-                            <Button type="submit" className="w-full h-12">
+                            <Button
+                                type="submit"
+                                className="w-full h-12"
+                                disabled={processing}
+                            >
                                 Login
                             </Button>
                         </div>

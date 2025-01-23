@@ -1,175 +1,112 @@
 import * as React from "react";
 import {
-    AudioWaveform,
-    BookOpen,
-    Bot,
-    Command,
-    Frame,
-    GalleryVerticalEnd,
-    Map,
-    PieChart,
-    Settings2,
-    SquareTerminal,
+    BriefcaseMedical,
+    ChartNoAxesCombined,
+    ClipboardPlus,
+    Home,
+    Hospital,
+    ListCheck,
+    Lock,
+    Stethoscope,
+    User,
+    UserRoundCog,
+    Users,
 } from "lucide-react";
 
-import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
-import { NavUser } from "@/components/nav-user";
-import { TeamSwitcher } from "@/components/team-switcher";
+import { NavMenus } from "@/components/nav-menus";
 import {
     Sidebar,
     SidebarContent,
-    SidebarFooter,
+    SidebarGroup,
     SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
     SidebarRail,
 } from "@/components/ui/sidebar";
 import { ScrollArea } from "./ui/scroll-area";
+import { Link } from "@inertiajs/react";
 
-// This is sample data.
 const data = {
-    user: {
-        name: "Misrudin",
-        email: "misrudinz@gmail.com",
-        avatar: "/avatars.jpg",
-    },
-    teams: [
+    master: [
         {
-            name: "Acme Inc",
-            logo: GalleryVerticalEnd,
-            plan: "Enterprise",
+            name: "Triage Level",
+            url: "/admin/triage-level",
+            icon: ChartNoAxesCombined,
         },
         {
-            name: "Acme Corp.",
-            logo: AudioWaveform,
-            plan: "Startup",
+            name: "Chceklist Item",
+            url: "/admin/checklist-item",
+            icon: ListCheck,
         },
         {
-            name: "Evil Corp.",
-            logo: Command,
-            plan: "Free",
+            name: "Medical Staff",
+            url: "/admin/medical-staff",
+            icon: Stethoscope,
         },
     ],
-    navMain: [
+    triase: [
         {
-            title: "Playground",
-            url: "#",
-            icon: SquareTerminal,
-            isActive: true,
-            items: [
-                {
-                    title: "History",
-                    url: "#",
-                },
-                {
-                    title: "Starred",
-                    url: "#",
-                },
-                {
-                    title: "Settings",
-                    url: "#",
-                },
-            ],
+            name: "Data Pasien",
+            url: "/admin/data-pasien",
+            icon: Users,
         },
         {
-            title: "Models",
-            url: "#",
-            icon: Bot,
-            items: [
-                {
-                    title: "Genesis",
-                    url: "#",
-                },
-                {
-                    title: "Explorer",
-                    url: "#",
-                },
-                {
-                    title: "Quantum",
-                    url: "#",
-                },
-            ],
+            name: "Treatments",
+            url: "/admin/treatments",
+            icon: Hospital,
         },
         {
-            title: "Documentation",
-            url: "#",
-            icon: BookOpen,
-            items: [
-                {
-                    title: "Introduction",
-                    url: "#",
-                },
-                {
-                    title: "Get Started",
-                    url: "#",
-                },
-                {
-                    title: "Tutorials",
-                    url: "#",
-                },
-                {
-                    title: "Changelog",
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: "Settings",
-            url: "#",
-            icon: Settings2,
-            items: [
-                {
-                    title: "General",
-                    url: "#",
-                },
-                {
-                    title: "Team",
-                    url: "#",
-                },
-                {
-                    title: "Billing",
-                    url: "#",
-                },
-                {
-                    title: "Limits",
-                    url: "#",
-                },
-            ],
+            name: "Triage",
+            url: "/admin/triage",
+            icon: ClipboardPlus,
         },
     ],
-    projects: [
+    setting: [
         {
-            name: "Design Engineering",
-            url: "#",
-            icon: Frame,
+            name: "User",
+            url: "/admin/user",
+            icon: UserRoundCog,
         },
         {
-            name: "Sales & Marketing",
-            url: "#",
-            icon: PieChart,
+            name: "Password",
+            url: "/admin/password",
+            icon: Lock,
         },
         {
-            name: "Travel",
-            url: "#",
-            icon: Map,
+            name: "Profile",
+            url: "/admin/profile",
+            icon: User,
         },
     ],
 };
 
 export function AppSidebar({ ...props }) {
     return (
-        <Sidebar collapsible="icon" {...props}>
-            <SidebarHeader>
-                <TeamSwitcher teams={data.teams} />
+        <Sidebar {...props}>
+            <SidebarHeader className="h-16 items-center gap-4">
+                <BriefcaseMedical size="30px" />
+                <p className="font-bold text-lg">Triase GO</p>
             </SidebarHeader>
             <SidebarContent>
                 <ScrollArea>
-                    <NavMain items={data.navMain} />
-                    <NavProjects projects={data.projects} />
+                    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+                        <SidebarMenu>
+                            <SidebarMenuItem>
+                                <SidebarMenuButton asChild size="md">
+                                    <Link href="/admin">
+                                        <Home />
+                                        <span>Dashboard</span>
+                                    </Link>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        </SidebarMenu>
+                    </SidebarGroup>
+                    <NavMenus menus={data.master} title="Master Data" />
+                    <NavMenus menus={data.triase} title="Triase" />
+                    <NavMenus menus={data.setting} title="General Setting" />
                 </ScrollArea>
             </SidebarContent>
-            <SidebarFooter>
-                <NavUser user={data.user} />
-            </SidebarFooter>
             <SidebarRail />
         </Sidebar>
     );

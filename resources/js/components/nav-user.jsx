@@ -26,9 +26,18 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
+import { useForm, usePage } from "@inertiajs/react";
 
-export function NavUser({ user, isNavbar, btnClassName }) {
+export function NavUser({ isNavbar, btnClassName }) {
     const { isMobile } = useSidebar();
+    const { user } = usePage().props.auth;
+    const { post } = useForm();
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        post(route("admin.logout"));
+    };
+
 
     return (
         <SidebarMenu>
@@ -92,19 +101,8 @@ export function NavUser({ user, isNavbar, btnClassName }) {
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                             <DropdownMenuItem>
-                                <Sparkles />
-                                Upgrade to Pro
-                            </DropdownMenuItem>
-                        </DropdownMenuGroup>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                            <DropdownMenuItem>
                                 <BadgeCheck />
                                 Account
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <CreditCard />
-                                Billing
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                                 <Bell />
@@ -112,7 +110,7 @@ export function NavUser({ user, isNavbar, btnClassName }) {
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleLogout}>
                             <LogOut />
                             Log out
                         </DropdownMenuItem>

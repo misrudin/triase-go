@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TriageLevel;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TriageLevelController extends Controller
 {
@@ -12,7 +13,8 @@ class TriageLevelController extends Controller
      */
     public function index()
     {
-        //
+        $triageLevels = TriageLevel::latest()->paginate();
+        return Inertia::render('Admin/TriageLevel', [ 'data' => $triageLevels ]);
     }
 
     /**
