@@ -18,7 +18,7 @@ class TriageLevelController extends Controller
         $triageLevels = TriageLevel::when($search, function ($query, $search) {
             $query->where('level', 'like', "%{$search}%")
                 ->orWhere('description', 'like', "%{$search}%");
-        })->latest()->paginate(10);
+        })->latest()->get();
 
         return Inertia::render('Admin/TriageLevel', [
             'data' => $triageLevels,

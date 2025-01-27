@@ -9,10 +9,17 @@ import {
 } from "./ui/select";
 import { cn } from "@/lib/utils";
 
-const Select = ({ options, value, onChange, placeholder, className }) => {
+const Select = ({
+    options,
+    value,
+    onChange,
+    placeholder,
+    className,
+    isLoading = false,
+}) => {
     return (
         <S onValueChange={onChange} value={value}>
-            <SelectTrigger className={cn(className, "w-full h-12")}>
+            <SelectTrigger className={cn(className, "w-full h-12")} isLoading={isLoading}>
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>

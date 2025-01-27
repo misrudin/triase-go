@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ChecklistItemController;
+use App\Http\Controllers\MedicalStaffController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TriageLevelController;
 use Illuminate\Foundation\Application;
@@ -30,5 +32,9 @@ Route::prefix('admin')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
     Route::resource('triage-level', TriageLevelController::class);
+
+    Route::resource('checklist-item', ChecklistItemController::class);
+
+    Route::resource('medical-staff', MedicalStaffController::class);
   });
 });
