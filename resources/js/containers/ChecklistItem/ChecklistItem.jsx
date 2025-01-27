@@ -60,7 +60,7 @@ const TriageLevel = ({ data, filters, levels }) => {
     ];
 
     return (
-        <div className="container">
+        <div className="">
             <div className="flex items-center justify-between pb-4">
                 <h1 className="text-2xl font-bold text-gray-800">
                     Checklist Item
