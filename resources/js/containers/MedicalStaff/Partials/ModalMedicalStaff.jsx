@@ -37,9 +37,13 @@ export default function ModalMedicalStaff({ isEdit, item }) {
             put(`/admin/medical-staff/${item.id}`, {
                 onSuccess: () => {
                     setData({
-                        level: "",
-                        description: "",
-                        triage_level_id: "",
+                        name: "",
+                        staff_id: "",
+                        role: "",
+                        department: "",
+                        email: "",
+                        phone_number: "",
+                        address: "",
                     });
                     toast({
                         description: "Data berhasil diupate",
