@@ -11,10 +11,21 @@ class TriageLevelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $triageLevels = TriageLevel::latest()->paginate();
-        return Inertia::render('Admin/TriageLevel', [ 'data' => $triageLevels ]);
+        $search = $request->input('search');
+
+        $triageLevels = TriageLevel::when($search, function ($query, $search) {
+            $query->where('level', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        })->latest()->paginate(10);
+
+        return Inertia::render('Admin/TriageLevel', [
+            'data' => $triageLevels,
+            'filters' => [
+                'search' => $search
+            ],
+        ]);
     }
 
     /**
@@ -30,7 +41,18 @@ class TriageLevelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'level' => 'required|string|max:255|unique:triage_levels,level',
+            'description' => 'required|string|max:500',
+        ]);
+
+        try {
+            TriageLevel::create($validatedData);
+
+            return redirect()->back()->with('success', 'Triage Level created successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -54,7 +76,18 @@ class TriageLevelController extends Controller
      */
     public function update(Request $request, TriageLevel $triageLevel)
     {
-        //
+        $validatedData = $request->validate([
+            'level' => 'required|string|max:255',
+            'description' => 'nullable|string|max:500',
+        ]);
+
+        try {
+            $triageLevel->update($validatedData);
+
+            return redirect()->back()->with('success', 'Triage Level created successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -62,6 +95,11 @@ class TriageLevelController extends Controller
      */
     public function destroy(TriageLevel $triageLevel)
     {
-        //
+        try {
+            $triageLevel->delete();
+            return redirect()->back()->with('success', 'Triage Level deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to delete Triage Level: ' . $e->getMessage());
+        }
     }
 }
