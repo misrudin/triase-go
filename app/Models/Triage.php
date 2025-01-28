@@ -10,8 +10,12 @@ class Triage extends Model
     use HasFactory;
 
     protected $fillable = [
+        'triage_no',
         'patient_id',
-        'medical_staff_id',
+        'user_id',
+        'allergy',
+        'complaint',
+        'status',
     ];
 
     /**
@@ -24,12 +28,12 @@ class Triage extends Model
     }
 
     /**
-     * Relasi ke MedicalStaff.
-     * Triage belongs to a MedicalStaff.
+     * Relasi ke User.
+     * Triage belongs to a User.
      */
-    public function medicalStaff()
+    public function user()
     {
-        return $this->belongsTo(MedicalStaff::class, 'medical_staff_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -48,5 +52,12 @@ class Triage extends Model
     public function triageChecklists()
     {
         return $this->hasMany(TriageChecklist::class, 'triage_id');
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($triage) {
+            $triage->triage_no = 'TRIAGE' . str_pad($triage->id, 4, '0', STR_PAD_LEFT);
+        });
     }
 }

@@ -11,7 +11,7 @@ class Treatments extends Model
 
     protected $fillable = [
         'triage_id',
-        'medical_staff_id',
+        'user_id',
         'treatment_details',
     ];
 
@@ -25,11 +25,11 @@ class Treatments extends Model
     }
 
     /**
-     * Relasi ke MedicalStaff.
-     * Treatment belongs to a MedicalStaff.
+     * Relasi ke User.
+     * Treatment belongs to a User.
      */
-    public function medicalStaff()
+    public function user()
     {
-        return $this->belongsTo(MedicalStaff::class, 'medical_staff_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -4,15 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\Treatments;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TreatmentsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->input('search');
+
+        $data = Treatments::with('triage')->with('user')
+            ->when($search, function ($query, $search) {
+                $query->where('treatment_detail', 'like', "%{$search}%")
+                    ->orWhereHas('triage', function ($query) use ($search) {
+                        $query->where('triage_no', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('user', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%");
+                    });
+            })->latest()->get();
+
+        return Inertia::render('Admin/Treatment', [
+            'data' => $data,
+            'filters' => [
+                'search' => $search
+            ],
+        ]);
     }
 
     /**

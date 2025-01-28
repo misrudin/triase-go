@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('triage_levels', function (Blueprint $table) {
             $table->id();
-            $table->enum('level', ['red', 'yellow', 'green', 'black']);
+            $table->enum('level', ['red', 'yellow', 'green', 'black', 'orange']);
             $table->string('description');
             $table->timestamps();
         });

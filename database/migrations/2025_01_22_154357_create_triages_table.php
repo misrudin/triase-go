@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('triages', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('patient_id');
-            $table->unsignedBigInteger('medical_staff_id');
+            $table->unsignedBigInteger('user_id');
+            $table->text('allergy')->nullable();
+            $table->text('complaint')->nullable();
+            $table->enum('status', ['waiting', 'in_progress', 'completed', 'referred', 'canceled'])->default('waiting');
             $table->timestamps();
-
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
 
-            $table->foreign('medical_staff_id')->references('id')->on('medical_staff')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

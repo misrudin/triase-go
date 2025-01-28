@@ -4,15 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PatientController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->input('search');
+
+        $data = Patient::when($search, function ($query, $search) {
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('phone_number', 'like', "%{$search}%")
+                ->orWhere('address', 'like', "%{$search}%")
+                ->orWhere('nik', 'like', "%{$search}%");
+        })->latest()->get();
+
+        return Inertia::render('Admin/Pasien', [
+            'data' => $data,
+            'filters' => [
+                'search' => $search
+            ],
+        ]);
     }
 
     /**

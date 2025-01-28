@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\ChecklistItem;
 use App\Models\TriageLevel;
 use Illuminate\Http\Request;
@@ -16,16 +17,20 @@ class ChecklistItemController extends Controller
     {
         $search = $request->input('search');
 
-        $data = ChecklistItem::with('triageLevel')
+        $data = ChecklistItem::with('triageLevel')->with('category')
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhereHas('triageLevel', function ($query) use ($search) {
                         $query->where('level', 'like', "%{$search}%");
                     })
+                    ->orWhereHas('category', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%");
+                    })
                     ->orWhere('description', 'like', "%{$search}%");
             })->latest()->get();
 
         $levels = TriageLevel::latest()->get();
+        $categories = Category::latest()->get();
 
         return Inertia::render('Admin/ChecklistItem', [
             'data' => $data,
@@ -33,6 +38,7 @@ class ChecklistItemController extends Controller
                 'search' => $search
             ],
             'levels' => $levels,
+            'categories' => $categories,
         ]);
     }
 
@@ -53,6 +59,7 @@ class ChecklistItemController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:500',
             'triage_level_id' => 'required|exists:triage_levels,id',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         try {
@@ -88,6 +95,7 @@ class ChecklistItemController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:500',
             'triage_level_id' => 'required|exists:triage_levels,id',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         try {

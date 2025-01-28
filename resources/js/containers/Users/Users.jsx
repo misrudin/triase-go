@@ -37,8 +37,20 @@ const Users = ({ data, filters }) => {
             cell: ({ row }) => <p className="capitalize">{row.original.role}</p>,
         },
         {
+            accessorKey: "department",
+            header: "Department",
+        },
+        {
             accessorKey: "email",
             header: "Email",
+        },
+        {
+            accessorKey: "phone_number",
+            header: "Nomor HP.",
+        },
+        {
+            accessorKey: "address",
+            header: "Alamat",
         },
         {
             id: "id",
@@ -65,7 +77,7 @@ const Users = ({ data, filters }) => {
                 value={values?.search}
                 setValue={(e) => setData("search", e)}
                 onSearch={handleSearch}
-                placeholder="Cari nama atau email"
+                placeholder="Cari nama, role, email, nomor hp, alamat"
             />
             <DataTable columns={columns} data={data} />
         </div>

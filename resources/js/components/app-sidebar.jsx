@@ -1,8 +1,8 @@
 import * as React from "react";
 import {
-    BriefcaseMedical,
     ChartNoAxesCombined,
     ClipboardPlus,
+    Group,
     Home,
     Hospital,
     ListCheck,
@@ -35,14 +35,14 @@ const data = {
             icon: ChartNoAxesCombined,
         },
         {
+            name: "Category",
+            url: "/admin/category",
+            icon: Group,
+        },
+        {
             name: "Chceklist Item",
             url: "/admin/checklist-item",
             icon: ListCheck,
-        },
-        {
-            name: "Medical Staff",
-            url: "/admin/medical-staff",
-            icon: Stethoscope,
         },
     ],
     triase: [
@@ -85,7 +85,7 @@ export function AppSidebar({ ...props }) {
     return (
         <Sidebar {...props}>
             <SidebarHeader className="h-16 items-center gap-4">
-                <BriefcaseMedical size="30px" />
+                <Stethoscope size="30px" />
                 <p className="font-bold text-lg">Triase GO</p>
             </SidebarHeader>
             <SidebarContent>

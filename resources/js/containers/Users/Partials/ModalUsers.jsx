@@ -12,6 +12,7 @@ import {
 import ErrorMessage from "@/components/ui/error-message";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@inertiajs/react";
 import { Pencil, Plus } from "lucide-react";
@@ -27,6 +28,9 @@ export default function ModalUsers({ isEdit, item }) {
         role: item?.role || "",
         password: "",
         password_confirmation: "",
+        department: item?.department || "",
+        phone_number: item?.phone_number || "",
+        address: item?.address || "",
     });
 
     const handleSubmit = (e) => {
@@ -40,6 +44,9 @@ export default function ModalUsers({ isEdit, item }) {
                         role: "",
                         password: "",
                         password_confirmation: "",
+                        department: "",
+                        phone_number: "",
+                        address: "",
                     });
                     toast({
                         description: "Data berhasil diupate",
@@ -57,7 +64,16 @@ export default function ModalUsers({ isEdit, item }) {
         } else {
             post("/admin/user", {
                 onSuccess: () => {
-                    setData({ level: "", description: "" });
+                    setData({
+                        name: "",
+                        email: "",
+                        role: "",
+                        password: "",
+                        password_confirmation: "",
+                        department: "",
+                        phone_number: "",
+                        address: "",
+                    });
                     toast({
                         description: "Data berhasil disimpan",
                     });
@@ -95,31 +111,14 @@ export default function ModalUsers({ isEdit, item }) {
                     </Button>
                 </DialogTrigger>
             )}
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[625px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>
-                            {isEdit ? "Update" : "Tambah"} Level Triase
+                            {isEdit ? "Update" : "Tambah"} User
                         </DialogTitle>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
-                        <div>
-                            <Label htmlFor="role" className="text-left">
-                                Role
-                            </Label>
-                            <Select
-                                options={[
-                                    { label: "Admin", value: "admin" },
-                                    { label: "User", value: "user" },
-                                ]}
-                                className="mt-1"
-                                placeholder="Pilih role"
-                                value={data.role}
-                                onChange={(e) => setData("role", e)}
-                            />
-                            <ErrorMessage message={errors?.role} />
-                        </div>
-
                         <div>
                             <Label htmlFor="name" className="text-right">
                                 Nama
@@ -136,66 +135,155 @@ export default function ModalUsers({ isEdit, item }) {
                             <ErrorMessage message={errors?.name} />
                         </div>
 
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="grid gap-4">
+                                <div>
+                                    <Label htmlFor="role" className="text-left">
+                                        Role
+                                    </Label>
+                                    <Select
+                                        options={[
+                                            { label: "Admin", value: "admin" },
+                                            { label: "User", value: "user" },
+                                        ]}
+                                        className="mt-1"
+                                        placeholder="Pilih role"
+                                        value={data.role}
+                                        onChange={(e) => setData("role", e)}
+                                    />
+                                    <ErrorMessage message={errors?.role} />
+                                </div>
+
+                                <div>
+                                    <Label
+                                        htmlFor="email"
+                                        className="text-right"
+                                    >
+                                        Email
+                                    </Label>
+                                    <Input
+                                        id="email"
+                                        className="h-12 mt-1"
+                                        placeholder="Masukan email"
+                                        value={data.email}
+                                        onChange={(e) =>
+                                            setData("email", e.target.value)
+                                        }
+                                    />
+                                    <ErrorMessage message={errors?.email} />
+                                </div>
+                            </div>
+                            <div className="grid gap-4">
+                                <div>
+                                    <Label
+                                        htmlFor="department"
+                                        className="text-right"
+                                    >
+                                        Department
+                                    </Label>
+                                    <Input
+                                        id="department"
+                                        className="h-12 mt-1 resize-none"
+                                        placeholder="Masukan department"
+                                        value={data.department}
+                                        onChange={(e) =>
+                                            setData(
+                                                "department",
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                    <ErrorMessage
+                                        message={errors?.department}
+                                    />
+                                </div>
+
+                                <div>
+                                    <Label
+                                        htmlFor="phone_number"
+                                        className="text-right"
+                                    >
+                                        Nomor HP.
+                                    </Label>
+                                    <Input
+                                        id="phone_number"
+                                        className="h-12 mt-1 resize-none"
+                                        placeholder="Masukan nomor hp"
+                                        value={data.phone_number}
+                                        onChange={(e) =>
+                                            setData(
+                                                "phone_number",
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                    <ErrorMessage
+                                        message={errors?.phone_number}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
                         <div>
-                            <Label htmlFor="email" className="text-right">
-                                Email
+                            <Label htmlFor="address" className="text-right">
+                                Alamat
                             </Label>
-                            <Input
-                                id="email"
-                                className="h-12 mt-1"
-                                placeholder="Masukan email"
-                                value={data.email}
+                            <Textarea
+                                id="username"
+                                className="h-12 mt-1 resize-none"
+                                placeholder="Masukan alamat"
+                                value={data.address}
                                 onChange={(e) =>
-                                    setData("email", e.target.value)
+                                    setData("address", e.target.value)
                                 }
                             />
-                            <ErrorMessage message={errors?.email} />
+                            <ErrorMessage message={errors?.address} />
                         </div>
 
                         {!isEdit && (
-                            <div>
-                                <Label
-                                    htmlFor="password"
-                                    className="text-right"
-                                >
-                                    Password
-                                </Label>
-                                <Input
-                                    id="password"
-                                    className="h-12 mt-1"
-                                    placeholder="Masukan password"
-                                    value={data.password}
-                                    onChange={(e) =>
-                                        setData("password", e.target.value)
-                                    }
-                                    type="password"
-                                />
-                                <ErrorMessage message={errors?.password} />
-                            </div>
-                        )}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <Label
+                                        htmlFor="password"
+                                        className="text-right"
+                                    >
+                                        Password
+                                    </Label>
+                                    <Input
+                                        id="password"
+                                        className="h-12 mt-1"
+                                        placeholder="Masukan password"
+                                        value={data.password}
+                                        onChange={(e) =>
+                                            setData("password", e.target.value)
+                                        }
+                                        type="password"
+                                    />
+                                    <ErrorMessage message={errors?.password} />
+                                </div>
 
-                        {!isEdit && (
-                            <div>
-                                <Label
-                                    htmlFor="password_confirmation"
-                                    className="text-right"
-                                >
-                                    Konfirmasi Password
-                                </Label>
-                                <Input
-                                    id="password_confirmation"
-                                    className="h-12 mt-1"
-                                    placeholder="Masukan konfirmasi password"
-                                    value={data.password_confirmation}
-                                    onChange={(e) =>
-                                        setData(
-                                            "password_confirmation",
-                                            e.target.value
-                                        )
-                                    }
-                                    type="password"
-                                />
-                                <ErrorMessage message={errors?.password} />
+                                <div>
+                                    <Label
+                                        htmlFor="password_confirmation"
+                                        className="text-right"
+                                    >
+                                        Konfirmasi Password
+                                    </Label>
+                                    <Input
+                                        id="password_confirmation"
+                                        className="h-12 mt-1"
+                                        placeholder="Masukan konfirmasi password"
+                                        value={data.password_confirmation}
+                                        onChange={(e) =>
+                                            setData(
+                                                "password_confirmation",
+                                                e.target.value
+                                            )
+                                        }
+                                        type="password"
+                                    />
+                                    <ErrorMessage message={errors?.password} />
+                                </div>
                             </div>
                         )}
                     </div>

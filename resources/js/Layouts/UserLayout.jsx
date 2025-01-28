@@ -5,15 +5,14 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import React from "react";
 
-const Layout = ({ children }) => {
+const UserLayout = ({ children, title = "Dashboard", description }) => {
     return (
         <>
-            <Seo title="Admin" />
+            <Seo title={title} description={description || title} />
             <SidebarProvider>
-                <AppSidebar />
                 <SidebarInset>
-                    <Navbar />
-                    <main className="p-5">{children}</main>
+                    <Navbar isUser />
+                    <main className="container mx-auto py-5">{children}</main>
                 </SidebarInset>
             </SidebarProvider>
             <Toaster />
@@ -21,4 +20,4 @@ const Layout = ({ children }) => {
     );
 };
 
-export default Layout;
+export default UserLayout;

@@ -20,7 +20,7 @@ export function LoginForm({ className, ...props }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("admin.login"));
+        post(route("login"));
     };
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -28,7 +28,7 @@ export function LoginForm({ className, ...props }) {
                 <CardHeader>
                     <CardTitle className="text-2xl">Selamat Datang!</CardTitle>
                     <CardDescription>
-                        Masuk sebagai admin triase go
+                        Silahkan login untuk masuk ke aplikasi
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -39,7 +39,7 @@ export function LoginForm({ className, ...props }) {
                                 <Input
                                     id="email"
                                     type="email"
-                                    name='email'
+                                    name="email"
                                     placeholder="m@example.com"
                                     required
                                     className="h-12"
@@ -57,7 +57,7 @@ export function LoginForm({ className, ...props }) {
                                 <Input
                                     id="password"
                                     type="password"
-                                    name='password'
+                                    name="password"
                                     autoComplete="on"
                                     required
                                     className="h-12"

@@ -11,6 +11,7 @@ class ChecklistItem extends Model
 
     protected $fillable = [
         'triage_level_id',
+        'category_id',
         'name',
         'description',
     ];
@@ -18,5 +19,10 @@ class ChecklistItem extends Model
     public function triageLevel()
     {
         return $this->belongsTo(TriageLevel::class, 'triage_level_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

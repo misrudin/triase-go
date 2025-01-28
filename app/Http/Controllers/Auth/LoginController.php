@@ -11,7 +11,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Admin/Login');
+        return Inertia::render('Auth/Login');
     }
 
     public function login(Request $request)
@@ -23,7 +23,11 @@ class LoginController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/admin');
+            if (Auth::user()->role === 'admin') {
+                return redirect()->intended('/admin');
+            } elseif (Auth::user()->role === 'user') {
+                return redirect()->intended('/');
+            }
         }
 
         return back()->withErrors([
@@ -33,10 +37,18 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        $role = Auth::user()->role;
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/admin/login');
+        if ($role === 'admin') {
+            return redirect('/admin/login');
+        } elseif ($role === 'user') {
+            return redirect('/login');
+        }
+
+        return redirect('/');
     }
 }

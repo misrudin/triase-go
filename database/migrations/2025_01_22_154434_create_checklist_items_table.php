@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('checklist_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('triage_level_id');
+            $table->unsignedBigInteger('category_id');
             $table->string('name');
             $table->string('description');
             $table->timestamps();
 
             $table->foreign('triage_level_id')->references('id')->on('triage_levels')->onDelete('cascade');
+
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 

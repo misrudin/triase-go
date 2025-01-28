@@ -6,7 +6,7 @@ import { DeleteData } from "./Partials/DeleteData";
 import { useForm } from "@inertiajs/react";
 import SearchInput from "@/components/search";
 
-const TriageLevel = ({ data, filters, levels }) => {
+const TriageLevel = ({ data, filters, levels, categories }) => {
     const {
         get,
         setData,
@@ -28,10 +28,17 @@ const TriageLevel = ({ data, filters, levels }) => {
                 dayjs(row.original.created_at).format("DD/MM/YYYY"),
         },
         {
-            accessorKey: "level",
+            accessorKey: "triage_level",
             header: "Level",
             cell: ({ row }) => (
                 <p className="capitalize">{row.original.triage_level.level}</p>
+            ),
+        },
+        {
+            accessorKey: "category",
+            header: "Category",
+            cell: ({ row }) => (
+                <p className="capitalize">{row.original.category.name}</p>
             ),
         },
         {
@@ -52,6 +59,7 @@ const TriageLevel = ({ data, filters, levels }) => {
                         isEdit
                         item={row.original}
                         levels={levels}
+                        categories={categories}
                     />
                     <DeleteData item={row.original} />
                 </div>
@@ -66,7 +74,7 @@ const TriageLevel = ({ data, filters, levels }) => {
                     Checklist Item
                 </h1>
 
-                <ModalChecklistItem levels={levels} />
+                <ModalChecklistItem levels={levels} categories={categories} />
             </div>
 
             <SearchInput

@@ -16,10 +16,17 @@ class UserController extends Controller
 
         $data = User::where('id', '!=', auth()->id())
             ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('role', 'like', "%{$search}%");
-            })->latest()->get();
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('department', 'like', "%{$search}%")
+                        ->orWhere('phone_number', 'like', "%{$search}%")
+                        ->orWhere('address', 'like', "%{$search}%")
+                        ->orWhere('role', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get();
 
         return Inertia::render('Admin/Users', [
             'data' => $data,
@@ -37,6 +44,10 @@ class UserController extends Controller
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:3|confirmed',
             'role' => 'required|string|max:100',
+            'staff_id' => 'required|string|max:100|unique:medical_staff,staff_id',
+            'department' => 'required|string|max:100',
+            'phone_number' => 'required|string|max:20|unique:medical_staff,phone_number',
+            'address' => 'required|string|max:255',
         ]);
 
         // Hash password
@@ -52,15 +63,15 @@ class UserController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        $user = User::findOrFail($id);
-
-        // Validasi data input
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $id,
             'role' => 'required|string|max:100',
+            'department' => 'required|string|max:100',
+            'email' => "required|email|max:255|unique:users,email,{$user->id}",
+            'phone_number' => "required|string|max:20|unique:users,phone_number,{$user->id}",
+            'address' => 'required|string|max:255',
         ]);
 
 

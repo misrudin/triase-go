@@ -35,7 +35,7 @@ export function NavUser({ isNavbar, btnClassName }) {
 
     const handleLogout = (e) => {
         e.preventDefault();
-        post(route("admin.logout"));
+        post(route("logout"));
     };
 
 
