@@ -8,6 +8,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\TreatmentsController;
 use App\Http\Controllers\TriageLevelController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserTriageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,4 +65,6 @@ Route::prefix('admin')->group(function () {
 
 Route::middleware(['auth', 'role:user'])->group(function () {
   Route::inertia('/', 'User/Home')->name('home');
+  Route::resource('/triage', UserTriageController::class)
+    ->only(['index']);
 });

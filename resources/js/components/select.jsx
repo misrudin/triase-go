@@ -16,10 +16,14 @@ const Select = ({
     placeholder,
     className,
     isLoading = false,
+    ...props
 }) => {
     return (
-        <S onValueChange={onChange} value={value}>
-            <SelectTrigger className={cn(className, "w-full h-12")} isLoading={isLoading}>
+        <S onValueChange={onChange} value={value} {...props}>
+            <SelectTrigger
+                className={cn(className, "w-full h-12")}
+                isLoading={isLoading}
+            >
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
