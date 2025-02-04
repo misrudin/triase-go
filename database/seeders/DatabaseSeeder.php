@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CategorySeeder::class,
-            ChecklistItemSeeder::class,
             TriageLevelSeeder::class,
+            ChecklistItemSeeder::class,
             UserSeeder::class,
         ]);
     }
