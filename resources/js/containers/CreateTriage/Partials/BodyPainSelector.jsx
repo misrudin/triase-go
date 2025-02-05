@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { humanInner, humanOrgan } from "@/lib/human-anatomy";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 
 const BodyPartsSelector = () => {
     const [pins, setPins] = useState([]);
@@ -58,20 +59,26 @@ const BodyPartsSelector = () => {
 
     return (
         <Card>
-            <CardHeader>
-                <CardTitle>
-                    <h2 className="text-lg font-bold">
-                        Bagian tubuh yang terasa sakit
-                    </h2>
-                </CardTitle>
-            </CardHeader>
             <CardContent>
-                <div className="relative h-screen w-full overflow-hidden bg-gray-900 text-gray-700 rounded-md">
+                <div className="my-5">
+                    <h2 className="text-lg font-bold">Keluhan</h2>
+                    <Textarea
+                        className="mt-3"
+                        rows={5}
+                        placeholder="Keluhan yang dirasakan pasien"
+                    />
+                </div>
+
+                <h2 className="text-lg font-bold mb-3">
+                    Bagian tubuh yang terasa sakit
+                </h2>
+
+                <div className="relative h-[80vh] w-full overflow-hidden bg-gray-900 text-gray-700 rounded-md">
                     <svg
                         ref={svgRef}
                         id="humanAnatomy"
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-screen mx-auto"
+                        className="h-[80vh] mx-auto"
                         viewBox="0 0 420 780"
                         onClick={handleClick}
                     >

@@ -1,10 +1,11 @@
 import UserLayout from "@/Layouts/UserLayout";
+import HomeTriage from "@/containers/Home/Home";
 import React from "react";
 
 const Home = () => {
     return (
         <>
-            <h1>Test</h1>
+            <HomeTriage />
         </>
     );
 };

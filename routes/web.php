@@ -5,8 +5,10 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChecklistItemController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TreatmentsController;
 use App\Http\Controllers\TriageLevelController;
+use App\Http\Controllers\TriageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserTriageController;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +58,10 @@ Route::prefix('admin')->group(function () {
       ->only(['index']);
 
     Route::resource('treatments', TreatmentsController::class)
+      ->only(['index']);
+    Route::resource('triage', TriageController::class)
+      ->only(['index']);
+    Route::resource('profile', ProfileController::class)
       ->only(['index']);
 
     Route::get('password', [PasswordController::class, 'index']);

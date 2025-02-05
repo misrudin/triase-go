@@ -45,7 +45,7 @@ const Treatment = ({ data, filters }) => {
         <div className="">
             <div className="flex items-center justify-between pb-4">
                 <h1 className="text-2xl font-bold text-gray-800">
-                    Daftar Treatment
+                    Daftar Treage
                 </h1>
             </div>
 
