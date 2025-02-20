@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/react";
 import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import dayjs from "dayjs";
@@ -38,9 +39,9 @@ const HomeTriage = () => {
     return (
         <div>
             <div className="mb-5 flex justify-end">
-                <a href="/triage">
+                <Link href="/triage">
                     <Button>Triage</Button>
-                </a>
+                </Link>
             </div>
             <DataTable columns={columns} data={data} />
         </div>

@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChecklistItemController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TreatmentsController;
@@ -70,7 +71,8 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::middleware(['auth', 'role:user'])->group(function () {
-  Route::inertia('/', 'User/Home')->name('home');
+  Route::resource('/', HomeController::class)
+    ->only('index');
   Route::resource('/triage', UserTriageController::class)
-    ->only(['index']);
+    ->only(['index', 'store']);
 });

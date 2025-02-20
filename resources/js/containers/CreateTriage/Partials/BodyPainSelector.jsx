@@ -2,13 +2,13 @@ import { useState, useRef } from "react";
 import { humanInner, humanOrgan } from "@/lib/human-anatomy";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import ModalPainLocation from "./ModalPainLocation";
 
-const BodyPartsSelector = () => {
-    const [pins, setPins] = useState([]);
+const BodyPartsSelector = ({ onNext, onBack, data, setData }) => {
     const [selectedPin, setSelectedPin] = useState(null);
-    const [showConfirm, setShowConfirm] = useState(false);
     const [showForm, setShowForm] = useState(false);
-    const [showSuccess, setShowSuccess] = useState(false);
     const svgRef = useRef(null);
 
     const handleClick = (e) => {
@@ -29,168 +29,162 @@ const BodyPartsSelector = () => {
         };
 
         setSelectedPin(newPin);
-        setShowConfirm(true);
-    };
-
-    const handleConfirm = () => {
-        setPins([...pins, selectedPin]);
-        setShowConfirm(false);
         setShowForm(true);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (values) => {
         setShowForm(false);
-        setShowSuccess(true);
+        setData("bodyPaint", [
+            ...data?.bodyPaint,
+            { ...selectedPin, ...values },
+        ]);
     };
 
-    const handleCancel = () => {
+    const handleSubmitUpdate = (values) => {
         setShowForm(false);
-        setShowConfirm(true);
+        const newBP = data?.bodyPaint?.map((e) => {
+            if (e.id === selectedPin.id) {
+                return { ...selectedPin, ...values };
+            }
+            return e;
+        });
+        setData("bodyPaint", newBP);
     };
 
-    const handleSuccessClose = () => {
-        setShowSuccess(false);
-    };
-
-    const handleCancelPin = () => {
-        setPins(pins.filter((pin) => pin.id !== selectedPin.id));
-        setShowConfirm(false);
+    const handleChange = (e) => {
+        setData(e.target.name, e.target.value);
     };
 
     return (
         <Card>
+            <CardHeader>
+                <CardTitle>
+                    <h2 className="text-xl font-bold text-center">
+                        Keluhan Pasien
+                    </h2>
+                </CardTitle>
+            </CardHeader>
             <CardContent>
-                <div className="my-5">
-                    <h2 className="text-lg font-bold">Keluhan</h2>
-                    <Textarea
-                        className="mt-3"
-                        rows={5}
-                        placeholder="Keluhan yang dirasakan pasien"
-                    />
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="flex flex-col gap-4">
+                        <div className="grid gap-2">
+                            <Label htmlFor="symptoms">Keluhan</Label>
+                            <Textarea
+                                id="symptoms"
+                                name="symptoms"
+                                value={data.symptoms}
+                                onChange={handleChange}
+                                placeholder="Keluhan yang dirasakan pasien"
+                                className="h-12 resize-none"
+                            />
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-4">
+                        <div className="grid gap-2">
+                            <Label htmlFor="allergy">Alergi</Label>
+                            <Textarea
+                                id="allergy"
+                                name="allergy"
+                                value={data.allergy}
+                                onChange={handleChange}
+                                placeholder="Apakah pasiean memiliki alergi ?"
+                                className="h-12 resize-none"
+                            />
+                        </div>
+                    </div>
                 </div>
 
                 <h2 className="text-lg font-bold mb-3">
                     Bagian tubuh yang terasa sakit
                 </h2>
 
-                <div className="relative h-[80vh] w-full overflow-hidden bg-gray-900 text-gray-700 rounded-md">
-                    <svg
-                        ref={svgRef}
-                        id="humanAnatomy"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-[80vh] mx-auto"
-                        viewBox="0 0 420 780"
-                        onClick={handleClick}
-                    >
-                        <g id="humanInner">
-                            <path fill="#FFDEC7" d={humanInner} />
-                            <image
-                                width="130"
-                                height="416"
-                                href={humanOrgan}
-                                transform="matrix(1 0 0 1 150.0002 12.8901)"
-                            />
-                        </g>
-                        {pins.map((pin, index) => (
-                            <g
-                                key={pin.id}
-                                className="cursor-pointer"
-                                onClick={() =>
-                                    alert(`x: ${pin.x}, y: ${pin.y}`)
-                                }
-                            >
-                                <circle
-                                    cx={pin.x}
-                                    cy={pin.y}
-                                    r="11"
-                                    fill="transparent"
-                                    stroke="white"
-                                    strokeWidth="1"
-                                    className="transition-all duration-200 hover:animate-blink"
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="relative h-[80vh] w-full overflow-hidden bg-gray-900 text-gray-700 rounded-md">
+                        <svg
+                            ref={svgRef}
+                            id="humanAnatomy"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-[80vh] mx-auto"
+                            viewBox="0 0 420 780"
+                            onClick={handleClick}
+                        >
+                            <g id="humanInner">
+                                <path fill="#FFDEC7" d={humanInner} />
+                                <image
+                                    width="130"
+                                    height="416"
+                                    href={humanOrgan}
+                                    transform="matrix(1 0 0 1 150.0002 12.8901)"
                                 />
-                                <circle
-                                    cx={pin.x}
-                                    cy={pin.y}
-                                    r="10"
-                                    fill="red"
-                                    className="transition-all duration-200 hover:fill-blue"
-                                />
-                                <text
-                                    x={pin.x}
-                                    y={pin.y}
-                                    dy="3.5"
-                                    textAnchor="middle"
-                                    fill="white"
-                                    fontSize="10px"
-                                    fontWeight="bold"
-                                >
-                                    {index + 1}
-                                </text>
                             </g>
-                        ))}
-                    </svg>
+                            {data?.bodyPaint?.map((pin, index) => (
+                                <g
+                                    key={pin.id}
+                                    className="cursor-pointer"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowForm(true);
+                                        setSelectedPin(pin);
+                                    }}
+                                >
+                                    <circle
+                                        cx={pin.x}
+                                        cy={pin.y}
+                                        r="11"
+                                        fill="transparent"
+                                        stroke="white"
+                                        strokeWidth="1"
+                                        className="transition-all duration-200 hover:animate-blink"
+                                    />
+                                    <circle
+                                        cx={pin.x}
+                                        cy={pin.y}
+                                        r="10"
+                                        fill="red"
+                                        className="transition-all duration-200 hover:fill-blue"
+                                    />
+                                    <text
+                                        x={pin.x}
+                                        y={pin.y}
+                                        dy="3.5"
+                                        textAnchor="middle"
+                                        fill="white"
+                                        fontSize="10px"
+                                        fontWeight="bold"
+                                    >
+                                        {index + 1}
+                                    </text>
+                                </g>
+                            ))}
+                        </svg>
 
-                    {showConfirm && (
-                        <div className="absolute left-1/2 top-10 -translate-x-1/2 bg-white p-4 rounded shadow-lg">
-                            <p>Konfirmasi posisi pin?</p>
-                            <button
-                                className="bg-green-500 text-white px-3 py-1 rounded"
-                                onClick={handleConfirm}
-                            >
-                                Ya
-                            </button>
-                            <button
-                                className="bg-red-500 text-white px-3 py-1 rounded ml-2"
-                                onClick={handleCancelPin}
-                            >
-                                Batal
-                            </button>
-                        </div>
-                    )}
-
-                    {showForm && (
-                        <div className="absolute left-1/2 top-10 -translate-x-1/2 bg-white p-4 rounded shadow-lg">
-                            <textarea
-                                className="w-full border p-2 rounded"
-                                placeholder="Masukkan catatan"
-                            ></textarea>
-                            <input
-                                type="text"
-                                className="w-full border p-2 rounded mt-2"
-                                placeholder="Nama"
+                        {showForm && (
+                            <ModalPainLocation
+                                isOpen={showForm}
+                                setIsOpen={setShowForm}
+                                handleAdd={handleSubmit}
+                                item={selectedPin}
+                                handleUpdate={handleSubmitUpdate}
                             />
-                            <div className="mt-2">
-                                <button
-                                    className="bg-blue-500 text-white px-3 py-1 rounded"
-                                    onClick={handleSubmit}
-                                >
-                                    Submit
-                                </button>
-                                <button
-                                    className="bg-gray-500 text-white px-3 py-1 rounded ml-2"
-                                    onClick={handleCancel}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
+                </div>
 
-                    {showSuccess && (
-                        <div className="fixed inset-0 flex items-center justify-center bg-black/40 text-white">
-                            <div className="bg-white p-6 rounded-lg">
-                                <p className="text-black">
-                                    Konfirmasi berhasil!
-                                </p>
-                                <button
-                                    className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
-                                    onClick={handleSuccessClose}
-                                >
-                                    OK
-                                </button>
-                            </div>
-                        </div>
-                    )}
+                <div className="flex justify-end gap-2 mt-8">
+                    <Button
+                        onClick={onBack}
+                        className="h-12 px-8"
+                        variant="secondary"
+                    >
+                        Kembali
+                    </Button>
+                    <Button
+                        onClick={onNext}
+                        className="h-12 px-8"
+                        disabled={data.bodyPaint.length === 0}
+                    >
+                        Selanjutnya
+                    </Button>
                 </div>
             </CardContent>
         </Card>

@@ -6,7 +6,6 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link } from "@inertiajs/react";
-import { Home } from "lucide-react";
 
 export function NavMenus({ menus, title }) {
     return (

@@ -54,6 +54,11 @@ class Triage extends Model
         return $this->hasMany(TriageChecklist::class, 'triage_id');
     }
 
+    public function painLocations()
+    {
+        return $this->hasMany(PainLocation::class);
+    }
+
     protected static function booted()
     {
         static::creating(function ($triage) {

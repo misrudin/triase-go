@@ -1,12 +1,13 @@
 import Datepicker from "@/components/date-picker";
 import Select from "@/components/select";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import React from "react";
 
-const FormPasien = ({ data, setData }) => {
+const FormPasien = ({ data, setData, onNext, errors }) => {
     const optionsGender = [
         { label: "Laki - Laki", value: "male" },
         { label: "Perempuan", value: "female" },
@@ -16,11 +17,14 @@ const FormPasien = ({ data, setData }) => {
         setData(e.target.name, e.target.value);
     };
 
+    const isNextDisabled = !data.name || !data.gender;
     return (
         <Card className="">
             <CardHeader>
                 <CardTitle>
-                    <h2 className="text-lg font-bold">Input Data Pasien</h2>
+                    <h2 className="text-xl font-bold text-center">
+                        Biodata Pasien
+                    </h2>
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -36,6 +40,11 @@ const FormPasien = ({ data, setData }) => {
                                 placeholder="Masukkan nama"
                                 className="h-12"
                             />
+                            {errors.name && (
+                                <p className="text-red-500 text-sm">
+                                    {errors.name}
+                                </p>
+                            )}
                         </div>
 
                         <div className="grid gap-2">
@@ -46,7 +55,13 @@ const FormPasien = ({ data, setData }) => {
                                 value={data.gender}
                                 onChange={(e) => setData("gender", e)}
                             />
+                            {errors.gender && (
+                                <p className="text-red-500 text-sm">
+                                    {errors.gender}
+                                </p>
+                            )}
                         </div>
+
                         <div className="grid gap-2">
                             <Label htmlFor="phone">No HP</Label>
                             <Input
@@ -61,7 +76,7 @@ const FormPasien = ({ data, setData }) => {
                         </div>
                     </div>
                     <div className="flex flex-col gap-4">
-                        <div className="grid gap-2 ">
+                        <div className="grid gap-2">
                             <Label htmlFor="nik">NIK</Label>
                             <Input
                                 id="nik"
@@ -91,6 +106,16 @@ const FormPasien = ({ data, setData }) => {
                             />
                         </div>
                     </div>
+                </div>
+
+                <div className="flex justify-end gap-2 mt-8">
+                    <Button
+                        onClick={onNext}
+                        disabled={isNextDisabled}
+                        className="h-12 px-8"
+                    >
+                        Selanjutnya
+                    </Button>
                 </div>
             </CardContent>
         </Card>
