@@ -14,7 +14,7 @@ class Triage extends Model
         'patient_id',
         'user_id',
         'allergy',
-        'complaint',
+        'symptoms',
         'status',
     ];
 

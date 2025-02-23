@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Triage;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,7 +13,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return Inertia::render('User/Home');
+        $triages = Triage::with(['patient', 'user', 'triageChecklists', 'painLocations'])
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->get();
+
+        return Inertia::render('User/Home', [
+            'data' => $triages,
+        ]);
     }
 
     /**

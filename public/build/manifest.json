@@ -1,0 +1,18 @@
+{
+  "_vendor-CM3dleQy.js": {
+    "file": "assets/vendor-CM3dleQy.js",
+    "name": "vendor"
+  },
+  "resources/js/app.jsx": {
+    "file": "assets/app-ghpI-gkw.js",
+    "name": "app",
+    "src": "resources/js/app.jsx",
+    "isEntry": true,
+    "imports": [
+      "_vendor-CM3dleQy.js"
+    ],
+    "css": [
+      "assets/app-D93hsWJP.css"
+    ]
+  }
+}

@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import dayjs from "dayjs";
 import React from "react";
 
-const HomeTriage = () => {
+const HomeTriage = ({ data: triages }) => {
+    console.log(triages);
+
     const data = [
         {
             created_at: new Date(),
