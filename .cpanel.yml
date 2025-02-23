@@ -1,6 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/triy4746/public_html/build
-    - /usr/bin/rsync -av /home/triy4746/triase-go/public/build/ $DEPLOYPATH/
-    - /bin/chmod -R 755 $DEPLOYPATH/
+    - export DEPLOYPATH=/home/example/public_html/build
+    - /bin/cp -R public/build/* $DEPLOYPATH
