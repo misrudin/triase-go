@@ -1,0 +1,6 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/triy4746/public_html/build
+    - /bin/cp -r public/build/* $DEPLOYPATH/
+    - /bin/chmod -R 755 $DEPLOYPATH/
+    - /bin/find $DEPLOYPATH/ -type f -exec chmod 644 {} \;
