@@ -42,7 +42,7 @@ const HomeTriage = ({ data: triages }) => {
         <div>
             <div className="mb-5 flex justify-end">
                 <Link href="/triage">
-                    <Button>Triage</Button>
+                    <Button>Triage Dashboard</Button>
                 </Link>
             </div>
             <DataTable columns={columns} data={data} />
