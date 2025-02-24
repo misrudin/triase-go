@@ -21,15 +21,10 @@ class TriageController extends Controller
 
         $data = Triage::with('patient')
             ->with('user')
-            ->with('treatments')
-            ->with('triageChecklists')
             ->with('painLocations')
             ->when($search, function ($query, $search) use ($statusTriage) {
                 $query->where('triage_no', 'like', "%{$search}%")
                     ->orWhereHas('patient', function ($query) use ($search) {
-                        $query->where('name', 'like', "%{$search}%");
-                    })
-                    ->orWhereHas('user', function ($query) use ($search) {
                         $query->where('name', 'like', "%{$search}%");
                     })
                     ->orWhere('allergy', 'like', "%{$search}%")
@@ -80,10 +75,17 @@ class TriageController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'gender' => 'required|string',
+            'nik' => 'nullable|string',
+            'birth_date' => 'nullable|string',
+            'address' => 'nullable|string',
+            'allergy' => 'nullable|string',
+            'symptoms' => 'nullable|string',
+            'phone' => 'nullable|string',
             'bodyPaint' => 'required|array',
             'bodyPaint.*.x' => 'required|numeric',
             'bodyPaint.*.y' => 'required|numeric',
             'bodyPaint.*.name' => 'required|string|max:255',
+            'bodyPaint.*.notes' => 'nullable|string|max:500',
             'triageChecklist' => 'required|array',
             'triageChecklist.*.checklist_item_id' => 'required|exists:checklist_items,id',
             'triageChecklist.*.checked' => 'required|boolean',
