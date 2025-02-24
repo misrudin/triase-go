@@ -21,12 +21,12 @@ const menus = {
         {
             name: "Triage Dashboard",
             icon: ClipboardPlus,
-            url: "/triage",
+            url: "/triage/create",
         },
         {
             name: "List Triase",
             icon: ListOrdered,
-            url: "/admin/triase",
+            url: "/triage",
         },
         {
             name: "Password",
@@ -71,8 +71,13 @@ const menus = {
             url: "/treatments",
         },
         {
-            name: "Triage",
+            name: "Triage Dashboard",
             icon: ClipboardPlus,
+            url: "/triage/create",
+        },
+        {
+            name: "List Triase",
+            icon: ListOrdered,
             url: "/triage",
         },
         {

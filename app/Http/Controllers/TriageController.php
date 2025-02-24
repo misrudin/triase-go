@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChecklistItem;
+use App\Models\Patient;
 use App\Models\Triage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class TriageController extends Controller
@@ -16,7 +19,11 @@ class TriageController extends Controller
         $search = $request->input('search');
         $statusTriage = $request->input('status');
 
-        $data = Triage::with('patient')->with('user')
+        $data = Triage::with('patient')
+            ->with('user')
+            ->with('treatments')
+            ->with('triageChecklists')
+            ->with('painLocations')
             ->when($search, function ($query, $search) use ($statusTriage) {
                 $query->where('triage_no', 'like', "%{$search}%")
                     ->orWhereHas('patient', function ($query) use ($search) {
@@ -26,7 +33,7 @@ class TriageController extends Controller
                         $query->where('name', 'like', "%{$search}%");
                     })
                     ->orWhere('allergy', 'like', "%{$search}%")
-                    ->orWhere('complaint', 'like', "%{$search}%");
+                    ->orWhere('symptoms', 'like', "%{$search}%");
             })
             ->when($statusTriage, function ($query, $statusTriage) {
                 $query->where('status', '=', $statusTriage);
@@ -49,7 +56,20 @@ class TriageController extends Controller
      */
     public function create()
     {
-        //
+        $data = ChecklistItem::with('triageLevel')->with('category')
+            ->latest()->get()
+            ->groupBy('category.name')
+            ->map(function ($items, $category) {
+                return [
+                    'category' => $category,
+                    'items' => $items->values(),
+                ];
+            })
+            ->values();;
+
+        return Inertia::render('User/Triage', [
+            'data' => $data,
+        ]);
     }
 
     /**
@@ -57,7 +77,52 @@ class TriageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'gender' => 'required|string',
+            'bodyPaint' => 'required|array',
+            'bodyPaint.*.x' => 'required|numeric',
+            'bodyPaint.*.y' => 'required|numeric',
+            'bodyPaint.*.name' => 'required|string|max:255',
+            'triageChecklist' => 'required|array',
+            'triageChecklist.*.checklist_item_id' => 'required|exists:checklist_items,id',
+            'triageChecklist.*.checked' => 'required|boolean',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $patient = Patient::create($request->only(['name', 'nik', 'gender', 'date_of_birth', 'address', 'phone_number']));
+
+            $triage = Triage::create([
+                'patient_id' => $patient->id,
+                'user_id' => auth()->id(),
+                'allergy' => $request->input('allergy'),
+                'symptoms' => $request->input('symptoms'),
+                'status' => 'waiting',
+            ]);
+
+            foreach ($validatedData['bodyPaint'] as $bodyPaint) {
+                $triage->painLocations()->create([
+                    'x' => $bodyPaint['x'],
+                    'y' => $bodyPaint['y'],
+                    'name' => $bodyPaint['name'],
+                    'notes' => $bodyPaint['notes'] ?? null,
+                ]);
+            }
+
+            foreach ($validatedData['triageChecklist'] as $checklist) {
+                $triage->triageChecklists()->create([
+                    'checklist_item_id' => $checklist['checklist_item_id'],
+                    'checked' => $checklist['checked'],
+                ]);
+            }
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Triage data stored successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to store triage data: ' . $e->getMessage());
+        }
     }
 
     /**

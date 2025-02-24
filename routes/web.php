@@ -52,8 +52,7 @@ Route::middleware(['auth'])->group(function () {
 
   Route::resource('treatments', TreatmentsController::class)
     ->only(['index']);
-  Route::resource('triage', TriageController::class)
-    ->only(['index']);
+
   Route::resource('profile', ProfileController::class)
     ->only(['index']);
 
@@ -61,6 +60,6 @@ Route::middleware(['auth'])->group(function () {
   Route::put('password', [PasswordController::class, 'update']);
   Route::resource('/', HomeController::class)
     ->only('index');
-  Route::resource('/triage', UserTriageController::class)
-    ->only(['index', 'store']);
+
+  Route::resource('triage', TriageController::class);
 });
