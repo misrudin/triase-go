@@ -10,12 +10,12 @@ const ProfileUser = ({ profile }) => {
                 <div className="absolute top-[-40px] left-1/2 transform -translate-x-1/2">
                     <Avatar className="w-20 h-20">
                         <AvatarImage
-                            src="https://github.com/shadcn.png"
-                            alt="@shadcn"
+                            src={profile?.name}
+                            alt={profile?.name}
                             className="w-20 h-20"
                         />
                         <AvatarFallback className="w-20 h-20 text-xl">
-                            CN
+                            {profile?.name.charAt(0).toUpperCase()}
                         </AvatarFallback>
                     </Avatar>
                 </div>
@@ -23,15 +23,15 @@ const ProfileUser = ({ profile }) => {
                     <div className="flex flex-col gap-3">
                         <div className="flex justify-between">
                             <p className="font-semibold">Name</p>
-                            <p>Taufik Hdyt</p>
+                            <p>{profile?.name}</p>
                         </div>
                         <div className="flex justify-between">
                             <p className="font-semibold">Email</p>
-                            <p>taufik@example.com</p>
+                            <p>{profile?.email}</p>
                         </div>
                         <div className="flex justify-between">
                             <p className="font-semibold">Phone Number</p>
-                            <p>083871281239</p>
+                            <p>{profile?.phone_number ?? "-"}</p>
                         </div>
                     </div>
                 </CardContent>
