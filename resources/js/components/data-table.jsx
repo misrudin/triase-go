@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
 
-export function DataTable({ columns, data }) {
+export function DataTable({ columns, data, isNoPagination,rowClassname }) {
     const table = useReactTable({
         data,
         columns,
@@ -56,7 +56,9 @@ export function DataTable({ columns, data }) {
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
-                                className="text-xs md:text-sm"
+                                className={`text-xs md:text-sm ${
+                                    rowClassname ? rowClassname(row) : ""
+                                }`}
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id}>
@@ -80,7 +82,7 @@ export function DataTable({ columns, data }) {
                     )}
                 </TableBody>
             </Table>
-            <DataTablePagination table={table} />
+            {!isNoPagination && <DataTablePagination table={table} />}
         </div>
     );
 }

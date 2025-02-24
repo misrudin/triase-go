@@ -3,6 +3,7 @@ import HomeTriage from "@/containers/Home/Home";
 import React from "react";
 
 const Home = ({ ...props }) => {
+    
     return (
         <>
             <HomeTriage {...props} />

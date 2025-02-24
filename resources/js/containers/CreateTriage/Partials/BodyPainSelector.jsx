@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import ModalPainLocation from "./ModalPainLocation";
+import { DataTable } from "@/components/data-table";
 
 const BodyPartsSelector = ({ onNext, onBack, data, setData }) => {
     const [selectedPin, setSelectedPin] = useState(null);
@@ -65,7 +66,7 @@ const BodyPartsSelector = ({ onNext, onBack, data, setData }) => {
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     <div className="flex flex-col gap-4">
                         <div className="grid gap-2">
                             <Label htmlFor="symptoms">Keluhan</Label>
@@ -98,7 +99,7 @@ const BodyPartsSelector = ({ onNext, onBack, data, setData }) => {
                     Bagian tubuh yang terasa sakit
                 </h2>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="relative h-[80vh] w-full overflow-hidden bg-gray-900 text-gray-700 rounded-md">
                         <svg
                             ref={svgRef}
@@ -165,6 +166,30 @@ const BodyPartsSelector = ({ onNext, onBack, data, setData }) => {
                                 handleAdd={handleSubmit}
                                 item={selectedPin}
                                 handleUpdate={handleSubmitUpdate}
+                            />
+                        )}
+                    </div>
+
+                    <div className="border-b-1">
+                        {data?.bodyPaint?.length > 0 && (
+                            <DataTable
+                                isNoPagination={true}
+                                columns={[
+                                    {
+                                        accessorKey: "No",
+                                        header: "No",
+                                        cell: ({ row }) => row.index + 1,
+                                    },
+                                    {
+                                        accessorKey: "name",
+                                        header: "Name",
+                                    },
+                                    {
+                                        accessorKey: "notes",
+                                        header: "Notes",
+                                    },
+                                ]}
+                                data={data?.bodyPaint}
                             />
                         )}
                     </div>

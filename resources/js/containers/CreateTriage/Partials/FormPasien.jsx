@@ -28,7 +28,7 @@ const FormPasien = ({ data, setData, onNext, errors }) => {
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-4">
                         <div className="grid gap-2">
                             <Label htmlFor="name">Nama Pasien</Label>
