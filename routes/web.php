@@ -34,12 +34,8 @@ Route::middleware(['auth'])->group(function () {
   Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
-Route::prefix('admin')->group(function () {
-  Route::middleware('guest')->group(function () {
-    Route::get('/login', [LoginController::class, 'index'])->name('admin.login');
-  });
 
-  Route::middleware(['auth', 'role:admin'])->group(function () {
+  Route::middleware(['auth'])->group(function () {
     Route::inertia('/', 'Admin/Dashboard')->name('admin.dashboard');
     Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
@@ -67,12 +63,8 @@ Route::prefix('admin')->group(function () {
 
     Route::get('password', [PasswordController::class, 'index']);
     Route::put('password', [PasswordController::class, 'update']);
-  });
-});
-
-Route::middleware(['auth', 'role:user'])->group(function () {
   Route::resource('/', HomeController::class)
-    ->only('index');
+  ->only('index');
   Route::resource('/triage', UserTriageController::class)
-    ->only(['index', 'store']);
-});
+  ->only(['index', 'store']);
+  });

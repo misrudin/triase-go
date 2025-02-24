@@ -23,11 +23,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
-            if (Auth::user()->role === 'admin') {
-                return redirect()->intended('/admin');
-            } elseif (Auth::user()->role === 'user') {
-                return redirect()->intended('/');
-            }
+            return redirect()->intended('/');
         }
 
         return back()->withErrors([
@@ -43,12 +39,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        if ($role === 'admin') {
-            return redirect('/admin/login');
-        } elseif ($role === 'user') {
-            return redirect('/login');
-        }
-
-        return redirect('/');
+        return redirect('/login');
     }
 }

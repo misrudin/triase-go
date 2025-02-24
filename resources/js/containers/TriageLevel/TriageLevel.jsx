@@ -6,6 +6,7 @@ import { DeleteData } from "./Partials/DeleteData";
 import { useForm } from "@inertiajs/react";
 import SearchInput from "@/components/search";
 
+
 const TriageLevel = ({ data, filters }) => {
     const {
         get,
@@ -52,9 +53,11 @@ const TriageLevel = ({ data, filters }) => {
     ];
 
     return (
-        <div className="">
+        <div className="px-3 md:px-0">
             <div className="flex items-center justify-between pb-4">
-                <h1 className="text-2xl font-bold text-gray-800">Triage Level</h1>
+                <h1 className="text-2xl font-bold text-gray-800">
+                    Triage Level
+                </h1>
 
                 <ModalTriageLevel />
             </div>

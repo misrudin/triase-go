@@ -26,7 +26,7 @@ export function DataTable({ columns, data }) {
     });
 
     return (
-        <div className="rounded-md border">
+        <div className="rounded-md border w-screen overflow-x-auto">
             <Table>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (

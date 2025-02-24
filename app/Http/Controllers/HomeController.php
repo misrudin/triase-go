@@ -13,13 +13,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $triages = Triage::with(['patient', 'user', 'triageChecklists', 'painLocations'])
-            ->where('user_id', auth()->id())
-            ->latest()
-            ->get();
-
+        $user = auth()->user();
         return Inertia::render('User/Home', [
-            'data' => $triages,
+            'data' => $user,
         ]);
     }
 

@@ -14,7 +14,7 @@ export default function SearchInput({
     return (
         <form
             onSubmit={onSearch}
-            className="flex items-center space-x-2 mb-4 max-w-[500px]"
+            className="flex items-center space-x-2 mb-4 w-full  md:max-w-[500px]"
         >
             <div className="relative w-full">
                 <Input

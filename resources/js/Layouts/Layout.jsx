@@ -10,10 +10,10 @@ const Layout = ({ children }) => {
         <>
             <Seo title="Admin" />
             <SidebarProvider>
-                <AppSidebar />
+                {/* <AppSidebar /> */}
                 <SidebarInset>
                     <Navbar />
-                    <main className="p-5">{children}</main>
+                    <main className="container mx-auto py-5">{children}</main>
                 </SidebarInset>
             </SidebarProvider>
             <Toaster />
