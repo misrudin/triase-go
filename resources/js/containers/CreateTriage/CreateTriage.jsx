@@ -34,6 +34,7 @@ const CreateTriage = ({ data: checklistItems }) => {
                 toast({
                     description: "Data berhasil disimpan",
                 });
+                router.get("/");
             },
             onError: (errors) => {
                 console.error(errors);

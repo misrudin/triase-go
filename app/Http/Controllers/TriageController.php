@@ -18,10 +18,13 @@ class TriageController extends Controller
     {
         $search = $request->input('search');
         $statusTriage = $request->input('status');
+        $user = auth()->user();
+        $priority = ['black', 'green', 'yellow', 'red']; // Urutan prioritas dari rendah ke tinggi
 
         $data = Triage::with('patient')
             ->with('user')
-            ->with('painLocations')
+            ->with('triageChecklists.checklistItem.triageLevel')
+            ->with('triageChecklists.checklistItem.category')
             ->when($search, function ($query, $search) use ($statusTriage) {
                 $query->where('triage_no', 'like', "%{$search}%")
                     ->orWhereHas('patient', function ($query) use ($search) {
@@ -33,11 +36,39 @@ class TriageController extends Controller
             ->when($statusTriage, function ($query, $statusTriage) {
                 $query->where('status', '=', $statusTriage);
             })
+            ->when($user->role !== 'admin', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
             ->latest()
             ->get();
 
+
+        foreach ($data as $triage) {
+            $levels = $triage->triageChecklists->map(function ($checklist) {
+                return $checklist->checklistItem->triageLevel->level ?? null;
+            })->filter()->toArray();
+
+            $highestLevel = collect($priority)->first(fn($level) => in_array($level, $levels)) ?? 'green';
+
+            $triage->level = $highestLevel;
+        }
+
+        $filtered = $data->map(function ($triage) {
+            return [
+                'id' => $triage->id,
+                'name' => $triage->patient->name ?? null,
+                'triage_no' => $triage->triage_no,
+                'level' => $triage->level,
+                'patient' => $triage->patient,
+                'allergy' => $triage->allergy,
+                'symptoms' => $triage->symptoms,
+                'created_at' => $triage->created_at,
+                'status' => $triage->status
+            ];
+        });
+
         return Inertia::render('Admin/Triage', [
-            'data' => $data,
+            'data' => $filtered,
             'filters' => [
                 'search' => $search,
                 'status' => $statusTriage,
