@@ -62,7 +62,7 @@ class Triage extends Model
     protected static function booted()
     {
         static::creating(function ($triage) {
-            $nextId = Triage::max('id') + 1;
+            $nextId = (Triage::max('id') ?? 0) + 1;
             $triage->triage_no = 'TRIAGE' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
         });
     }
