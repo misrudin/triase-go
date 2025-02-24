@@ -38,6 +38,11 @@ const TriageLevel = ({ data, filters }) => {
         {
             accessorKey: "description",
             header: "Deskripsi",
+            cell: ({ row }) => (
+                <div className="min-w-[200px] max-w-[400px] whitespace-normal break-words">
+                    {row.original.description}
+                </div>
+            ),
         },
         {
             id: "id",
@@ -53,7 +58,7 @@ const TriageLevel = ({ data, filters }) => {
     ];
 
     return (
-        <div className="px-3 md:px-0">
+        <div className="">
             <div className="flex items-center justify-between pb-4">
                 <h1 className="text-2xl font-bold text-gray-800">
                     Triage Level

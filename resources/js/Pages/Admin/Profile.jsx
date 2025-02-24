@@ -1,10 +1,10 @@
 import ProfileUser from "@/containers/Profile/Profile";
 
 
-const ProfilePage = () => {
+const ProfilePage = ({ ...props }) => {
     return (
         <>
-            <ProfileUser />
+            <ProfileUser {...props} />
         </>
     );
 };

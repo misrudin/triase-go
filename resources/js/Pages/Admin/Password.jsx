@@ -21,7 +21,7 @@ const UsersPage = ({ ...props }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(`/admin/password`, {
+        put(`/password`, {
             onSuccess: () => {
                 setData({
                     current_password: "",
@@ -57,7 +57,8 @@ const UsersPage = ({ ...props }) => {
     return (
         <>
             <Seo title="Reset Password" />
-            <form onSubmit={handleSubmit} className="max-w-[500px]">
+            <form onSubmit={handleSubmit} className="w-full flex justify-center items-center min-h-[70vh]">
+                <div className="grid gap-4 py-4 shadow-lg p-4 rounded-lg min-w-[400px]">
                 {isShowAlert && (
                     <Alert>
                         <CircleCheck className="h-4 w-4" />
@@ -67,7 +68,7 @@ const UsersPage = ({ ...props }) => {
                         </AlertDescription>
                     </Alert>
                 )}
-                <div className="grid gap-4 py-4">
+
                     <div>
                         <Label
                             htmlFor="current_password"
@@ -124,9 +125,8 @@ const UsersPage = ({ ...props }) => {
                         />
                         <ErrorMessage message={errors?.password} />
                     </div>
-                </div>
 
-                <div className="mt-4">
+                    <div className="mt-4">
                     <Button
                         type="submit"
                         className="h-12 w-full"
@@ -135,6 +135,8 @@ const UsersPage = ({ ...props }) => {
                         Simpan
                     </Button>
                 </div>
+                </div>
+
             </form>
         </>
     );

@@ -1,9 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 
-const ProfileUser = () => {
+const ProfileUser = ({ profile }) => {
+    console.log(profile);
+
     return (
-        <div className="flex justify-start mt-10">
+        <div className="flex justify-center mt-10">
             <Card className="relative pt-16 max-w-sm w-full text-center">
                 <div className="absolute top-[-40px] left-1/2 transform -translate-x-1/2">
                     <Avatar className="w-20 h-20">

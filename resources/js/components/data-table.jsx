@@ -26,14 +26,17 @@ export function DataTable({ columns, data }) {
     });
 
     return (
-        <div className="rounded-md border w-screen overflow-x-auto">
+        <div className="rounded-md border max-w-[calc(100vw-2rem)] overflow-x-auto">
             <Table>
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
                                 return (
-                                    <TableHead key={header.id}>
+                                    <TableHead
+                                        key={header.id}
+                                        className="text-xs md:text-sm"
+                                    >
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
@@ -53,6 +56,7 @@ export function DataTable({ columns, data }) {
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
+                                className="text-xs md:text-sm"
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id}>
@@ -68,7 +72,7 @@ export function DataTable({ columns, data }) {
                         <TableRow>
                             <TableCell
                                 colSpan={columns.length}
-                                className="h-24 text-center"
+                                className="h-24 text-center text-xs md:text-sm"
                             >
                                 No results.
                             </TableCell>

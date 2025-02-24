@@ -32,39 +32,35 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
   Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-});
 
+  Route::inertia('/', 'Admin/Dashboard')->name('admin.dashboard');
 
-  Route::middleware(['auth'])->group(function () {
-    Route::inertia('/', 'Admin/Dashboard')->name('admin.dashboard');
-    Route::post('/logout', [LoginController::class, 'logout'])->name('admin.logout');
+  Route::resource('triage-level', TriageLevelController::class)
+    ->only(['index', 'store', 'update', 'destroy']);
 
-    Route::resource('triage-level', TriageLevelController::class)
-      ->only(['index', 'store', 'update', 'destroy']);
+  Route::resource('checklist-item', ChecklistItemController::class)
+    ->only(['index', 'store', 'update', 'destroy']);
 
-    Route::resource('checklist-item', ChecklistItemController::class)
-      ->only(['index', 'store', 'update', 'destroy']);
+  Route::resource('user', UserController::class)
+    ->only(['index', 'store', 'update', 'destroy']);
 
-    Route::resource('user', UserController::class)
-      ->only(['index', 'store', 'update', 'destroy']);
+  Route::resource('category', CategoryController::class)
+    ->only(['index', 'store', 'update', 'destroy']);
 
-    Route::resource('category', CategoryController::class)
-      ->only(['index', 'store', 'update', 'destroy']);
+  Route::resource('data-pasien', PatientController::class)
+    ->only(['index']);
 
-    Route::resource('data-pasien', PatientController::class)
-      ->only(['index']);
+  Route::resource('treatments', TreatmentsController::class)
+    ->only(['index']);
+  Route::resource('triage', TriageController::class)
+    ->only(['index']);
+  Route::resource('profile', ProfileController::class)
+    ->only(['index']);
 
-    Route::resource('treatments', TreatmentsController::class)
-      ->only(['index']);
-    Route::resource('triage', TriageController::class)
-      ->only(['index']);
-    Route::resource('profile', ProfileController::class)
-      ->only(['index']);
-
-    Route::get('password', [PasswordController::class, 'index']);
-    Route::put('password', [PasswordController::class, 'update']);
+  Route::get('password', [PasswordController::class, 'index']);
+  Route::put('password', [PasswordController::class, 'update']);
   Route::resource('/', HomeController::class)
-  ->only('index');
+    ->only('index');
   Route::resource('/triage', UserTriageController::class)
-  ->only(['index', 'store']);
-  });
+    ->only(['index', 'store']);
+});
