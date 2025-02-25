@@ -39,6 +39,7 @@ class ChecklistItemController extends Controller
             ],
             'levels' => $levels,
             'categories' => $categories,
+            'title' => 'Master Data Checklist',
         ]);
     }
 

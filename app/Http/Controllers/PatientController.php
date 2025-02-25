@@ -27,6 +27,7 @@ class PatientController extends Controller
             'filters' => [
                 'search' => $search
             ],
+            'title' => 'Daftar Pasien',
         ]);
     }
 

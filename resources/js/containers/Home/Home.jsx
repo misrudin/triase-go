@@ -77,7 +77,7 @@ const HomeTriage = ({ data: user }) => {
 const MenuItem = ({ val }) => {
     return (
         <Link href={val.url} className="group">
-            <div className="bg-white p-6 rounded-xl shadow-[0_0_5px_rgba(0,0,0,0.05)] flex flex-col items-center justify-center gap-3 transition-transform duration-200 group-hover:scale-[1.03]">
+            <div className="bg-white p-6 rounded-xl shadow-[0_0_5px_rgba(0,0,0,0.09)] flex flex-col items-center justify-center gap-3 transition-transform duration-200 group-hover:scale-[1.03]">
                 <div className="w-16 h-16 flex items-center justify-center bg-gray-100 rounded-full">
                     <img src={val.icon} alt={val.name} className="w-10 h-10" />
                 </div>

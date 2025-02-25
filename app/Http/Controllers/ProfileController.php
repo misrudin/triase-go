@@ -18,7 +18,8 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
         return Inertia::render('Admin/Profile', [
-           'profile' => $user,
+            'profile' => $user,
+            'title' => 'Akun Saya',
         ]);
     }
 

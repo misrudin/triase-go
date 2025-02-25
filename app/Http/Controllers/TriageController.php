@@ -39,7 +39,6 @@ class TriageController extends Controller
             ->when($user->role !== 'admin', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
-            ->latest()
             ->get();
 
 
@@ -73,6 +72,7 @@ class TriageController extends Controller
                 'search' => $search,
                 'status' => $statusTriage,
             ],
+            'title' => 'Daftar Triase',
         ]);
     }
 
@@ -82,7 +82,7 @@ class TriageController extends Controller
      */
     public function create()
     {
-        $data = ChecklistItem::with('triageLevel')->with('category')
+        $checklist = ChecklistItem::with('triageLevel')->with('category')
             ->latest()->get()
             ->groupBy('category.name')
             ->map(function ($items, $category) {
@@ -94,7 +94,8 @@ class TriageController extends Controller
             ->values();;
 
         return Inertia::render('User/Triage', [
-            'data' => $data,
+            'checklist' => $checklist,
+            'title' => 'Tambah Triase',
         ]);
     }
 
@@ -206,6 +207,7 @@ class TriageController extends Controller
 
         return Inertia::render('Admin/DetailTriage', [
             'data' => $data,
+            'title' => 'Detail Triase',
         ]);
     }
 
@@ -269,6 +271,7 @@ class TriageController extends Controller
         return Inertia::render('Admin/EditTriage', [
             'data' => $data,
             'checklist' => $checklist,
+            'title' => 'Triase Ulang',
         ]);
     }
 

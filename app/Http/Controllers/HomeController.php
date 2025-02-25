@@ -16,6 +16,7 @@ class HomeController extends Controller
         $user = auth()->user();
         return Inertia::render('User/Home', [
             'data' => $user,
+            'title' => 'Home',
         ]);
     }
 

@@ -33,6 +33,7 @@ class UserController extends Controller
             'filters' => [
                 'search' => $search
             ],
+            'title' => 'Daftar Pengguna',
         ]);
     }
 

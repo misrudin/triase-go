@@ -24,6 +24,7 @@ class CategoryController extends Controller
             'filters' => [
                 'search' => $search
             ],
+            'title' => 'Kategori Triase',
         ]);
     }
 

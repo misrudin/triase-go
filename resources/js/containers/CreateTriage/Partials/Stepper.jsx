@@ -1,6 +1,6 @@
 import React from "react";
 
-const Stepper = ({ step, setStep }) => {
+const Stepper = ({ step, setStep, isEdit }) => {
     const steps = [
         { id: 1, label: "Biodata" },
         { id: 2, label: "Keluhan" },
@@ -21,7 +21,7 @@ const Stepper = ({ step, setStep }) => {
                                     ? "bg-blue-400 text-white"
                                     : "bg-gray-200 text-gray-600"
                             }`}
-                            {...(step > s.id && {
+                            {...((step > s.id || isEdit) && {
                                 onClick: () => setStep(s.id),
                             })}
                         >

@@ -31,6 +31,7 @@ class TreatmentsController extends Controller
             'filters' => [
                 'search' => $search
             ],
+            'title' => 'Tindakan',
         ]);
     }
 

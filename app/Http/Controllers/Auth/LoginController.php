@@ -11,7 +11,9 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Auth/Login');
+        return Inertia::render('Auth/Login', [
+            'title' => 'Login',
+        ]);
     }
 
     public function login(Request $request)

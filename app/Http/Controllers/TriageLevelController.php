@@ -25,6 +25,7 @@ class TriageLevelController extends Controller
             'filters' => [
                 'search' => $search
             ],
+            'title' => 'Level Triase',
         ]);
     }
 

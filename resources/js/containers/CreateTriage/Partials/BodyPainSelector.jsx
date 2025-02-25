@@ -66,7 +66,7 @@ const BodyPartsSelector = ({ onNext, onBack, data, setData }) => {
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-1 gap-4 mb-6">
                     <div className="flex flex-col gap-4">
                         <div className="grid gap-2">
                             <Label htmlFor="symptoms">Keluhan</Label>
@@ -99,7 +99,7 @@ const BodyPartsSelector = ({ onNext, onBack, data, setData }) => {
                     Bagian tubuh yang terasa sakit
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                     <div className="relative h-[80vh] w-full overflow-hidden bg-gray-900 text-gray-700 rounded-md">
                         <svg
                             ref={svgRef}

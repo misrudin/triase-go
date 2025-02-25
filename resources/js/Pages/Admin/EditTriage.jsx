@@ -1,14 +1,7 @@
-import Seo from "@/components/seo";
-import React from "react";
+import CreateTriage from "@/containers/CreateTriage";
 
 const EditTriagePage = ({ ...props }) => {
-    console.log(props.data);
-    console.log(props.checklist);
-    return (
-        <>
-            <Seo title="Edit Triage" />
-        </>
-    );
+    return <CreateTriage {...props} isEdit />;
 };
 
 export default EditTriagePage;

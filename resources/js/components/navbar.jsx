@@ -1,9 +1,14 @@
-import { usePage } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
+import { Button } from "./ui/button";
+import { ChevronLeft } from "lucide-react";
 
 const Navbar = () => {
+    const { url, props } = usePage();
     const { user } = usePage().props.auth;
     const [isScrolled, setIsScrolled] = useState(false);
+
+    const pageTitle = props.title || "";
 
     useEffect(() => {
         const handleScroll = () => {
@@ -23,19 +28,39 @@ const Navbar = () => {
             }`}
         >
             <div className="container mx-auto flex justify-between items-center px-4 py-3">
-                <div className="flex items-center gap-2">
-                    <img
-                        src="/images/user.png"
-                        alt="User Profile"
-                        className="w-12 h-12 rounded-full border-2 border-white"
-                    />
-                    <div>
-                        <p className="font-normal text-xs text-gray-400">
-                            Welcome
-                        </p>
-                        <p className="font-semibold text-sm">{user?.name}</p>
+                {/* Tombol Back jika tidak di halaman home */}
+                {url !== "/" && (
+                    <div className="flex items-center gap-2">
+                        <Button
+                            onClick={() => window.history.back()}
+                            variant="outline"
+                            size="icon"
+                        >
+                            <ChevronLeft />
+                        </Button>
+                        <p className="text-md font-bold">{pageTitle}</p>
                     </div>
-                </div>
+                )}
+
+                {url === "/" && (
+                    <Link href="/profile">
+                        <div className="flex items-center gap-2">
+                            <img
+                                src="/images/user.png"
+                                alt="User Profile"
+                                className="w-12 h-12 rounded-full border-2 border-white"
+                            />
+                            <div>
+                                <p className="font-normal text-xs text-gray-400">
+                                    Welcome
+                                </p>
+                                <p className="font-semibold text-sm">
+                                    {user?.name}
+                                </p>
+                            </div>
+                        </div>
+                    </Link>
+                )}
             </div>
         </header>
     );

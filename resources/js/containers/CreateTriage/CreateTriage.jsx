@@ -6,17 +6,19 @@ import FormTriase from "./Partials/FormTriase";
 import Stepper from "./Partials/Stepper";
 import { useToast } from "@/hooks/use-toast";
 
-const CreateTriage = ({ data: checklistItems }) => {
+const CreateTriage = ({ checklist: checklistItems, data: detail, isEdit }) => {
+    console.log(detail);
+
     const [step, setStep] = useState(1);
     const { data, setData, post, errors } = useForm({
-        name: "",
-        nik: "",
-        gender: "",
-        birth_date: "",
-        address: "",
-        phone: "",
-        allergy: "",
-        symptoms: "",
+        name: detail?.patient?.name,
+        nik: detail?.patient?.nik,
+        gender: detail?.patient?.gender,
+        birth_date: detail?.patient?.birth_date,
+        address: detail?.patient?.address,
+        phone: detail?.patient?.phone,
+        allergy: detail?.allergy,
+        symptoms: detail?.symptoms,
         bodyPaint: [],
         triageChecklist: [],
     });
@@ -48,7 +50,7 @@ const CreateTriage = ({ data: checklistItems }) => {
 
     return (
         <div className="grid grid-cols-1 gap-6">
-            <Stepper step={step} setStep={setStep} />
+            <Stepper step={step} setStep={setStep} isEdit={isEdit} />
 
             {step === 1 && (
                 <FormPasien
