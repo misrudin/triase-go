@@ -17,7 +17,7 @@ const Category = ({ data, filters }) => {
 
     const handleSearch = (e) => {
         if (e) e.preventDefault();
-        get("/admin/category");
+        get("/category");
     };
 
     const columns = [

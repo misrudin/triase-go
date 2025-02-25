@@ -36,7 +36,7 @@ export default function ModalUsers({ isEdit, item }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isEdit) {
-            put(`/admin/user/${item.id}`, {
+            put(`/user/${item.id}`, {
                 onSuccess: () => {
                     setData({
                         name: "",
@@ -62,7 +62,7 @@ export default function ModalUsers({ isEdit, item }) {
                 },
             });
         } else {
-            post("/admin/user", {
+            post("/user", {
                 onSuccess: () => {
                     setData({
                         name: "",

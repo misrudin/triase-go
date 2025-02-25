@@ -18,7 +18,7 @@ export function DeleteData({ item }) {
     const { toast } = useToast();
 
     const handleDelete = () => {
-        destroy(`/admin/checklist-item/${item.id}`, {
+        destroy(`/checklist-item/${item.id}`, {
             onSuccess: () => {
                 toast({
                     description: "Data berhasil dihapus",

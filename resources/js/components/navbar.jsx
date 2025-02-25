@@ -1,33 +1,40 @@
-import React from "react";
-import { SidebarTrigger } from "./ui/sidebar";
-import { NavUser } from "./nav-user";
-import { Stethoscope } from "lucide-react";
-import { Link } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
+import React, { useState, useEffect } from "react";
 
-const Navbar = ({ isUser }) => {
+const Navbar = () => {
+    const { user } = usePage().props.auth;
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
-        <header className="z-10 sticky bg-background/75 supports-[backdrop-filter]:bg-background/60 backdrop-blur top-0 border-b h-16 px-3 flex items-center">
-            <div
-                className="container flex shrink-0 items-center gap-2 mx-auto"
-                // {...(!isUser && {
-                //     className: "flex shrink-0 items-center gap-2 w-full",
-                // })}
-            >
-                {/* {!isUser && <SidebarTrigger />} */}
-                
-                    <Link href="/">
-                        <div className="flex gap-2 items-center">
-                            <Stethoscope size="30px" />
-                            <p className="font-bold text-lg">Triase GO</p>
-                        </div>
-                    </Link>
-                
-
-                <div className="ml-auto">
-                    <NavUser
-                        isNavbar
-                        btnClassName="hover:bg-transparent focus-visible:ring-0"
+        <header
+            className={`z-50 sticky top-0 bg-slate-50 transition-shadow duration-300 ${
+                isScrolled
+                    ? "shadow-[0_0_10px_rgba(0,0,0,0.1)] bg-white"
+                    : "shadow-none"
+            }`}
+        >
+            <div className="container mx-auto flex justify-between items-center px-4 py-3">
+                <div className="flex items-center gap-2">
+                    <img
+                        src="/images/user.png"
+                        alt="User Profile"
+                        className="w-12 h-12 rounded-full border-2 border-white"
                     />
+                    <div>
+                        <p className="font-normal text-xs text-gray-400">
+                            Welcome
+                        </p>
+                        <p className="font-semibold text-sm">{user?.name}</p>
+                    </div>
                 </div>
             </div>
         </header>

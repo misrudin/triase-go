@@ -29,7 +29,7 @@ export default function ModalTriageLevel({ isEdit, item }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isEdit) {
-            put(`/admin/triage-level/${item.id}`, {
+            put(`/triage-level/${item.id}`, {
                 onSuccess: () => {
                     setData({ level: "", description: "" });
                     toast({
@@ -46,7 +46,7 @@ export default function ModalTriageLevel({ isEdit, item }) {
                 },
             });
         } else {
-            post("/admin/triage-level", {
+            post("/triage-level", {
                 onSuccess: () => {
                     setData({ level: "", description: "" });
                     toast({

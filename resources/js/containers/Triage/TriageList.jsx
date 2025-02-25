@@ -18,8 +18,6 @@ const TriageList = ({ data }) => {
         {
             accessorKey: "triage_no",
             header: "Triage No",
-            // cell: ({ row }) =>
-            //     dayjs(row.original.created_at).format("DD/MM/YYYY"),
         },
         {
             accessorKey: "patient.name",
@@ -51,14 +49,14 @@ const TriageList = ({ data }) => {
 
         {
             id: "id",
-            header: () => <div>Aksi</div>,
+            header: "Aksi",
             center: true,
             cell: ({ row }) => (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button
                             variant="ghost"
-                            className={`${
+                            className={`focus-visible:ring-0 ${
                                 row?.original?.level === "black"
                                     ? "text-white"
                                     : "text-black"
@@ -97,13 +95,15 @@ const TriageList = ({ data }) => {
 
     const getRowClassName = (row) => {
         if (row.original.level === "green") {
-            return "bg-green-500";
+            return "bg-green-100 hover:bg-green-200";
         } else if (row.original.level === "black") {
-            return "bg-black hover:text-black text-white"; // Warna untuk laki-laki
+            return "bg-gray-400 hover:bg-gray-500";
         } else if (row.original.level === "yellow") {
-            return "bg-yellow-500"; // Warna untuk laki-laki
+            return "bg-yellow-100 hover:bg-yellow-200";
         } else if (row.original.level === "red") {
-            return "bg-red-500"; // Warna untuk laki-laki
+            return "bg-red-100 hover:bg-red-200";
+        } else if (row.original.level === "orange") {
+            return "bg-orange-100 hover:bg-orange-200";
         }
         return "";
     };

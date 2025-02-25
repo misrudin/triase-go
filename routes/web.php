@@ -11,7 +11,6 @@ use App\Http\Controllers\TreatmentsController;
 use App\Http\Controllers\TriageLevelController;
 use App\Http\Controllers\TriageController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserTriageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,8 +31,6 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
   Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-  Route::inertia('/', 'Admin/Dashboard')->name('admin.dashboard');
 
   Route::resource('triage-level', TriageLevelController::class)
     ->only(['index', 'store', 'update', 'destroy']);
@@ -57,7 +54,9 @@ Route::middleware(['auth'])->group(function () {
     ->only(['index']);
 
   Route::get('password', [PasswordController::class, 'index']);
+
   Route::put('password', [PasswordController::class, 'update']);
+
   Route::resource('/', HomeController::class)
     ->only('index');
 

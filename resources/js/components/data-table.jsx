@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
 
-export function DataTable({ columns, data, isNoPagination,rowClassname }) {
+export function DataTable({ columns, data, isNoPagination, rowClassname }) {
     const table = useReactTable({
         data,
         columns,
@@ -26,9 +26,9 @@ export function DataTable({ columns, data, isNoPagination,rowClassname }) {
     });
 
     return (
-        <div className="rounded-md border max-w-[calc(100vw-2rem)] overflow-x-auto">
+        <div className="rounded-md border max-w-[calc(100vw-2rem)] overflow-x-auto bg-white">
             <Table>
-                <TableHeader>
+                <TableHeader className="bg-white">
                     {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {

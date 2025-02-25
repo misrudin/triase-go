@@ -8,7 +8,7 @@ import Layout from "./Layouts/Layout";
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
 createInertiaApp({
-    title: (title) => title ? `${title} - ${appName}` : appName,
+    title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) => {
         const pages = import.meta.glob("./Pages/**/*.jsx", { eager: true });
         let page = pages[`./Pages/${name}.jsx`];
@@ -22,7 +22,7 @@ createInertiaApp({
         root.render(<App {...props} />);
     },
     progress: {
-        color: "#FFF",
+        color: "red",
         showSpinner: true,
     },
 });

@@ -19,7 +19,7 @@ export function DeleteData({ item }) {
     const { toast } = useToast()
 
     const handleDelete = () => {
-        destroy(`/admin/user/${item.id}`, {
+        destroy(`/user/${item.id}`, {
             onSuccess: () => {
                 toast({
                     description: "Data berhasil dihapus",

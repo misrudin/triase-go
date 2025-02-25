@@ -18,7 +18,7 @@ const TriageLevel = ({ data, filters }) => {
 
     const handleSearch = (e) => {
         if (e) e.preventDefault();
-        get("/admin/triage-level");
+        get("/triage-level");
     };
 
     const columns = [

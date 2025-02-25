@@ -31,51 +31,51 @@ const data = {
     master: [
         {
             name: "Triage Level",
-            url: "/admin/triage-level",
+            url: "/triage-level",
             icon: ChartNoAxesCombined,
         },
         {
             name: "Category",
-            url: "/admin/category",
+            url: "/category",
             icon: Group,
         },
         {
             name: "Chceklist Item",
-            url: "/admin/checklist-item",
+            url: "/checklist-item",
             icon: ListCheck,
         },
     ],
     triase: [
         {
             name: "Data Pasien",
-            url: "/admin/data-pasien",
+            url: "/data-pasien",
             icon: Users,
         },
         {
             name: "Treatments",
-            url: "/admin/treatments",
+            url: "/treatments",
             icon: Hospital,
         },
         {
             name: "Triage",
-            url: "/admin/triage",
+            url: "/triage",
             icon: ClipboardPlus,
         },
     ],
     setting: [
         {
             name: "User",
-            url: "/admin/user",
+            url: "/user",
             icon: UserRoundCog,
         },
         {
             name: "Password",
-            url: "/admin/password",
+            url: "/password",
             icon: Lock,
         },
         {
             name: "Profile",
-            url: "/admin/profile",
+            url: "/profile",
             icon: User,
         },
     ],
@@ -94,7 +94,7 @@ export function AppSidebar({ ...props }) {
                         <SidebarMenu>
                             <SidebarMenuItem>
                                 <SidebarMenuButton asChild size="md">
-                                    <Link href="/admin">
+                                    <Link href="">
                                         <Home />
                                         <span>Dashboard</span>
                                     </Link>

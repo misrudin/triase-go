@@ -1,16 +1,14 @@
-import UserLayout from "@/Layouts/UserLayout";
+import Seo from "@/components/seo";
 import HomeTriage from "@/containers/Home/Home";
 import React from "react";
 
 const Home = ({ ...props }) => {
-    
     return (
         <>
+            <Seo title="Daftar Triase" />
             <HomeTriage {...props} />
         </>
     );
 };
-
-Home.layout = (page) => <UserLayout children={page} title="Daftar Triase" />;
 
 export default Home;

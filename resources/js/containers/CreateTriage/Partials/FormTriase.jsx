@@ -34,7 +34,7 @@ const FormTriase = ({
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {checklistItems?.map((option, index) => (
                             <div key={`${option?.category}-${index}`}>
                                 <h2 className="text-md font-semibold">

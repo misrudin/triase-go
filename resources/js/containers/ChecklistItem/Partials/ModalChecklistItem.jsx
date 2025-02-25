@@ -38,7 +38,7 @@ export default function ModalChecklistItem({
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isEdit) {
-            put(`/admin/checklist-item/${item.id}`, {
+            put(`/checklist-item/${item.id}`, {
                 onSuccess: () => {
                     setData({
                         name: "",
@@ -60,7 +60,7 @@ export default function ModalChecklistItem({
                 },
             });
         } else {
-            post("/admin/checklist-item", {
+            post("/checklist-item", {
                 onSuccess: () => {
                     setData({
                         name: "",

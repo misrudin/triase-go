@@ -15,7 +15,7 @@ const Treatment = ({ data, filters }) => {
 
     const handleSearch = (e) => {
         if (e) e.preventDefault();
-        get("/admin/treatments");
+        get("/treatments");
     };
 
     const columns = [

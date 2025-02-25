@@ -15,7 +15,7 @@ const Pasien = ({ data, filters }) => {
 
     const handleSearch = (e) => {
         if (e) e.preventDefault();
-        get("/admin/data-pasien");
+        get("/data-pasien");
     };
 
     const columns = [

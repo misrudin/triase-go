@@ -17,7 +17,7 @@ const TriageLevel = ({ data, filters, levels, categories }) => {
 
     const handleSearch = (e) => {
         if (e) e.preventDefault();
-        get("/admin/checklist-item");
+        get("/checklist-item");
     };
 
     const columns = [

@@ -27,7 +27,7 @@ export default function ModalCategory({ isEdit, item }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isEdit) {
-            put(`/admin/category/${item.id}`, {
+            put(`/category/${item.id}`, {
                 onSuccess: () => {
                     setData({
                         name: "",
@@ -46,7 +46,7 @@ export default function ModalCategory({ isEdit, item }) {
                 },
             });
         } else {
-            post("/admin/category", {
+            post("/category", {
                 onSuccess: () => {
                     setData({ name: "" });
                     toast({

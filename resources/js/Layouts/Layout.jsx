@@ -9,12 +9,10 @@ const Layout = ({ children }) => {
     return (
         <>
             <Seo title="Admin" />
-            <SidebarProvider>
-                <SidebarInset>
-                    <Navbar />
-                    <main className="container mx-auto py-5 px-4 md:px-0">{children}</main>
-                </SidebarInset>
-            </SidebarProvider>
+            <Navbar />
+            <main className="container mx-auto py-5 px-4 md:px-0 bg-slate-50">
+                {children}
+            </main>
             <Toaster />
         </>
     );

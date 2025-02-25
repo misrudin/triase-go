@@ -12,16 +12,23 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::create([
-            'name' => 'Umum',
-        ]);
+        $categories = [
+            'Umum',
+            'Pernafasan',
+            'Kondisi Jantung',
+            'Pencernaan',
+            'Saraf',
+            'Mata',
+            'Kulit',
+            'Tulang & Sendi',
+            'Infeksi',
+            'Ginekologi',
+            'Pediatri',
+            'Psikiatri',
+        ];
 
-        Category::create([
-            'name' => 'Pernafasan',
-        ]);
-
-        Category::create([
-            'name' => 'Kondisi Jantung',
-        ]);
+        foreach ($categories as $category) {
+            Category::firstOrCreate(['name' => $category]);
+        }
     }
 }

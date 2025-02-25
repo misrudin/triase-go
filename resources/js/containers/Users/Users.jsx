@@ -17,7 +17,7 @@ const Users = ({ data, filters }) => {
 
     const handleSearch = (e) => {
         if (e) e.preventDefault();
-        get("/admin/user");
+        get("/user");
     };
 
     const columns = [

@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Triage extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'triage_no',
@@ -17,6 +19,8 @@ class Triage extends Model
         'symptoms',
         'status',
     ];
+
+    protected $dates = ['deleted_at'];
 
     /**
      * Relasi ke Patient.
