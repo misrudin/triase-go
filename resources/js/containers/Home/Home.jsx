@@ -60,8 +60,8 @@ const menus = {
 
 const HomeTriage = ({ data: user }) => {
     return (
-        <div>
-            <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5">
+        <div className="py-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-5">
                 {user && user?.role === "user"
                     ? menus.user.map((val, idx) => (
                           <MenuItem key={`user${idx}`} val={val} />

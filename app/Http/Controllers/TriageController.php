@@ -48,7 +48,7 @@ class TriageController extends Controller
                 return $checklist->checklistItem->triageLevel->level ?? null;
             })->filter()->toArray();
 
-            $highestLevel = collect($priority)->first(fn($level) => in_array($level, $levels)) ?? 'green';
+            $highestLevel = collect($priority)->first(fn($level) => in_array($level, $levels)) ?? '';
 
             $triage->level = $highestLevel;
         }
@@ -163,7 +163,50 @@ class TriageController extends Controller
      */
     public function show(Triage $triage)
     {
-        //
+        $user = auth()->user();
+        $priority = ['black', 'green', 'yellow', 'red'];
+
+        $triage = Triage::with([
+            'patient',
+            'user',
+            'treatments',
+            'painLocations',
+            'triageChecklists.checklistItem.triageLevel',
+            'triageChecklists.checklistItem.category'
+        ])
+            ->when($user->role !== 'admin', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->findOrFail($triage->id);
+
+
+        $levels = $triage->triageChecklists->map(function ($checklist) {
+            return $checklist->checklistItem->triageLevel->level ?? null;
+        })->filter()->toArray();
+
+        $highestLevel = collect($priority)->first(fn($level) => in_array($level, $levels)) ?? '';
+
+        $triage->level = $highestLevel;
+
+        $data = [
+            'id' => $triage->id,
+            'name' => $triage->patient->name ?? null,
+            'triage_no' => $triage->triage_no,
+            'level' => $triage->level,
+            'patient' => $triage->patient,
+            'allergy' => $triage->allergy,
+            'symptoms' => $triage->symptoms,
+            'created_at' => $triage->created_at,
+            'status' => $triage->status,
+            'user' => $triage->user,
+            'treatments' => $triage->treatments,
+            'pain_locations' => $triage->painLocations,
+            'triage_checklists' => $triage->triageChecklists,
+        ];
+
+        return Inertia::render('Admin/DetailTriage', [
+            'data' => $data,
+        ]);
     }
 
     /**
@@ -171,7 +214,62 @@ class TriageController extends Controller
      */
     public function edit(Triage $triage)
     {
-        //
+        $user = auth()->user();
+        $priority = ['black', 'green', 'yellow', 'red'];
+
+        $checklist = ChecklistItem::with('triageLevel')->with('category')
+            ->latest()->get()
+            ->groupBy('category.name')
+            ->map(function ($items, $category) {
+                return [
+                    'category' => $category,
+                    'items' => $items->values(),
+                ];
+            })
+            ->values();;
+
+        $triage = Triage::with([
+            'patient',
+            'user',
+            'treatments',
+            'painLocations',
+            'triageChecklists.checklistItem.triageLevel',
+            'triageChecklists.checklistItem.category'
+        ])
+            ->when($user->role !== 'admin', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->findOrFail($triage->id);
+
+
+        $levels = $triage->triageChecklists->map(function ($checklist) {
+            return $checklist->checklistItem->triageLevel->level ?? null;
+        })->filter()->toArray();
+
+        $highestLevel = collect($priority)->first(fn($level) => in_array($level, $levels)) ?? '';
+
+        $triage->level = $highestLevel;
+
+        $data = [
+            'id' => $triage->id,
+            'name' => $triage->patient->name ?? null,
+            'triage_no' => $triage->triage_no,
+            'level' => $triage->level,
+            'patient' => $triage->patient,
+            'allergy' => $triage->allergy,
+            'symptoms' => $triage->symptoms,
+            'created_at' => $triage->created_at,
+            'status' => $triage->status,
+            'user' => $triage->user,
+            'treatments' => $triage->treatments,
+            'pain_locations' => $triage->painLocations,
+            'triage_checklists' => $triage->triageChecklists,
+        ];
+
+        return Inertia::render('Admin/EditTriage', [
+            'data' => $data,
+            'checklist' => $checklist,
+        ]);
     }
 
     /**
@@ -187,6 +285,12 @@ class TriageController extends Controller
      */
     public function destroy(Triage $triage)
     {
-        //
+        try {
+            $triage->delete();
+
+            return redirect()->back()->with('success', 'Triage berhasil dihapus (soft delete)');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus triage: ' . $e->getMessage());
+        }
     }
 }
