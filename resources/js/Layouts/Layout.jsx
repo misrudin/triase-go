@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
         <>
             <Seo title={pageTitle} description={pageTitle} />
             <Navbar />
-            <main className="container mx-auto py-5 px-4 bg-white max-w-[500px] shadow-[0_0_5px_rgba(0,0,0,0.1)] min-h-screen pt-[72px]">
+            <main className="container mx-auto px-4 bg-white max-w-[500px] shadow-[0_0_5px_rgba(0,0,0,0.1)] min-h-screen pt-[72px] pb-6">
                 {children}
             </main>
             <Toaster />

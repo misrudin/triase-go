@@ -202,7 +202,13 @@ class TriageController extends Controller
             'user' => $triage->user,
             'treatments' => $triage->treatments,
             'pain_locations' => $triage->painLocations,
-            'triage_checklists' => $triage->triageChecklists,
+            'triage_checklists' => $triage->triageChecklists->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'checked' => (bool) $item->checked,
+                ];
+            }),
         ];
 
         return Inertia::render('Admin/DetailTriage', [

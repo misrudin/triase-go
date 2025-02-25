@@ -9,93 +9,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Link } from "@inertiajs/react";
 import { EllipsisVertical, Eye, Printer, Repeat2, Trash } from "lucide-react";
+import { DeleteData } from "./Partials/DeleteData";
 
 const TriageList = ({ data }) => {
-    console.log(data);
-    // const columns = [
-    //     {
-    //         accessorKey: "#",
-    //         header: "No",
-    //         cell: ({ row }) => row.index + 1,
-    //     },
-    //     {
-    //         accessorKey: "triage_no",
-    //         header: "Triage No",
-    //     },
-    //     {
-    //         accessorKey: "patient.name",
-    //         header: "Nama",
-    //     },
-    //     {
-    //         accessorKey: "patient.nik",
-    //         header: "NIK",
-    //         cell: ({ row }) => row.original.patient.nik ?? "-",
-    //     },
-    //     {
-    //         accessorKey: "patient.date_of_birth",
-    //         header: "Tanggal Lahir",
-    //         cell: ({ row }) => row.original.patient.nik ?? "-",
-    //     },
-    //     {
-    //         accessorKey: "patient.gender",
-    //         header: "Jenis Kelamain",
-    //         cell: ({ row }) => row.original.patient.gender.toUpperCase(),
-    //     },
-    //     {
-    //         accessorKey: "allergy",
-    //         header: "Alergi",
-    //     },
-    //     {
-    //         accessorKey: "symptoms",
-    //         header: "Keluhan",
-    //     },
-
-    //     {
-    //         id: "id",
-    //         header: "Aksi",
-    //         center: true,
-    //         cell: ({ row }) => (
-    //             <DropdownMenu>
-    //                 <DropdownMenuTrigger asChild>
-    //                     <Button
-    //                         variant="ghost"
-    //                         className={`focus-visible:ring-0 ${
-    //                             row?.original?.level === "black"
-    //                                 ? "text-white"
-    //                                 : "text-black"
-    //                         }`}
-    //                     >
-    //                         <EllipsisVertical />
-    //                     </Button>
-    //                 </DropdownMenuTrigger>
-    //                 <DropdownMenuContent
-    //                     className="w-56"
-    //                     side="bottom"
-    //                     align="end"
-    //                     sideOffset={8}
-    //                 >
-    //                     <DropdownMenuItem>
-    //                         <Repeat2 />
-    //                         <span>Triase Ulang</span>
-    //                     </DropdownMenuItem>
-    //                     <DropdownMenuItem>
-    //                         <Eye />
-    //                         <span>Lihat Detail</span>
-    //                     </DropdownMenuItem>
-    //                     <DropdownMenuItem>
-    //                         <Printer />
-    //                         <span>Cetak Triase</span>
-    //                     </DropdownMenuItem>
-    //                 </DropdownMenuContent>
-    //             </DropdownMenu>
-    //             // <div className="flex items-center space-x-2 justify-center">
-    //             //     {/* <ModalCategory isEdit item={row.original} /> */}
-    //             //     {/* <DeleteData item={row.original} /> */}
-    //             // </div>
-    //         ),
-    //     },
-    // ];
-
     const getColorLevel = (val) => {
         if (val?.level === "green") {
             return "border-green-500 hover:border-green-600";
@@ -203,15 +119,7 @@ const TriageList = ({ data }) => {
                                                     <Printer />
                                                     <span>Cetak Triase</span>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem
-                                                    className="text-red-500 cursor-pointer"
-                                                    onClick={(event) => {
-                                                        event.stopPropagation();
-                                                    }}
-                                                >
-                                                    <Trash />
-                                                    <span>Hapus</span>
-                                                </DropdownMenuItem>
+                                                <DeleteData item={val} />
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </div>
