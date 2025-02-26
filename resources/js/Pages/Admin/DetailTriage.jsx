@@ -1,6 +1,7 @@
+import DetailTriage from "@/containers/DetailTriage";
+
 const DetailTriagePage = ({ ...props }) => {
-    console.log(props.data);
-    return null;
+    return <DetailTriage {...props} />;
 };
 
 export default DetailTriagePage;
