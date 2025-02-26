@@ -3,8 +3,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 const TriaseCheck = ({ data }) => {
     return (
-        <Card className={"p-3 relative"}>
-            <div className="absolute text-xl px-2 rounded-full bg-white top-[-15px] left-1/2 -translate-x-1/2 font-bold">
+        <Card className={"p-3"}>
+            <div className="text-xl font-bold">
                 Triase List
             </div>
 
@@ -13,7 +13,9 @@ const TriaseCheck = ({ data }) => {
                     <div className="items-top flex space-x-2" key={item?.id}>
                         <Checkbox
                             id={item?.id}
-                            checked={data?.some((c) => c.id === item.id)}
+                            checked={data?.some(
+                                (c) => c.checklist_item_id === item.id
+                            )}
 
                             // onCheckedChange={() => handleCheckboxChange(item.id)}
                         />
@@ -22,11 +24,11 @@ const TriaseCheck = ({ data }) => {
                                 htmlFor={item?.id}
                                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                             >
-                                {item?.name}
+                                {item?.checklist_item?.name}
                             </label>
-                            {!!item?.description && (
+                            {!!item?.checklist_item?.description && (
                                 <p className="text-sm text-muted-foreground">
-                                    {item?.description}
+                                    {item?.checklist_item?.description}
                                 </p>
                             )}
                         </div>

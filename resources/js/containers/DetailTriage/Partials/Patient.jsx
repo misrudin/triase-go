@@ -30,18 +30,13 @@ const Patient = ({ data }) => {
                         NIK : {data?.patient?.nik ?? "330113112312312"}{" "}
                     </div>
                 </div>
-                <Badge
-                    className={`pointer-events-none capitalize text-[14px] font-normal px-1 py-[1px] ${getColorBadge(
-                        data
-                    )}`}
-                >
-                    {data?.level}
-                </Badge>
+
+                <div className={`w-5 h-5 rounded-full ${getColorBadge(data)}`} />
             </div>
 
             <Separator className="my-4" />
 
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-1 gap-3">
                 <div className="flex items-center gap-3">
                     <img
                         src={"/images/gender.png"}
@@ -77,7 +72,7 @@ const Patient = ({ data }) => {
             </div>
 
             <div className="mt-5 border rounded-md relative p-3">
-                <p className="text-[#ababab] absolute top-[-13px] bg-white px-2">
+                <p className="text-[#ababab] left-2 absolute top-[-13px] bg-white px-1">
                     Alamat
                 </p>
                 <p className="text-[#ababab]">{data?.patient?.address}</p>
