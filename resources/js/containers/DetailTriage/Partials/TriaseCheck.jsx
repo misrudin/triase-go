@@ -14,7 +14,7 @@ const TriaseCheck = ({ data }) => {
                         <Checkbox
                             id={item?.id}
                             checked={data?.some(
-                                (c) => c.checklist_item_id === item.id
+                                (c) => c.id === item.id
                             )}
 
                             // onCheckedChange={() => handleCheckboxChange(item.id)}

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { format } from "date-fns";
 import React from "react";
 
 const FormPasien = ({ data, setData, onNext, errors }) => {
@@ -57,12 +58,12 @@ const FormPasien = ({ data, setData, onNext, errors }) => {
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="phone">No HP</Label>
+                        <Label htmlFor="phone_number">No HP</Label>
                         <Input
-                            id="phone"
-                            name="phone"
+                            id="phone_number"
+                            name="phone_number"
                             type="tel"
-                            value={data.phone}
+                            value={data.phone_number}
                             onChange={handleChange}
                             placeholder="Masukkan no HP"
                             className="h-12"
@@ -82,10 +83,15 @@ const FormPasien = ({ data, setData, onNext, errors }) => {
                         />
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="birth_date">Tanggal Lahir</Label>
+                        <Label htmlFor="date_of_birth">Tanggal Lahir</Label>
                         <Datepicker
-                            selectedDate={data.birth_date}
-                            onChange={(date) => setData("birth_date", date)}
+                            selectedDate={data.date_of_birth}
+                            onChange={(date) => {
+                                setData(
+                                    "date_of_birth",
+                                    format(date, "Y-MM-dd")
+                                );
+                            }}
                         />
                     </div>
                     <div className="grid gap-2">

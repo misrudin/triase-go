@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/data-table";
 import { Card } from "@/components/ui/card";
 import { humanInner, humanOrgan } from "@/lib/human-anatomy";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import ModalPainLocation from "./ModalPainLocation";
 
 const Symton = ({ data }) => {
@@ -34,12 +34,15 @@ const Symton = ({ data }) => {
 
     return (
         <Card className="p-3">
-            <p>
-                <b>Keluhan</b> : {data?.symptoms ?? "-"}
-            </p>
-            <p className="mt-2">
-                <b>Alergi</b> : {data?.allergy ?? "-"}
-            </p>
+            <div className="mt-3">
+                <p className="font-semibold text-lg">Keluhan</p>
+                <p>{data?.symptoms ?? "-"}</p>
+            </div>
+
+            <div className="mt-3">
+                <p className="font-semibold text-lg">Alergy</p>
+                <p>{data?.allergy ?? "-"}</p>
+            </div>
 
             <div className="grid grid-cols-1 gap-4 mt-5">
                 <div className="relative h-[80vh] w-full overflow-hidden bg-gray-900 text-gray-700 rounded-md">

@@ -1,22 +1,21 @@
-import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
 const Patient = ({ data }) => {
-        const getColorBadge = (val) => {
-            if (val?.level === "green") {
-                return "bg-green-500";
-            } else if (val?.level === "black") {
-                return "bg-gray-700";
-            } else if (val?.level === "yellow") {
-                return "bg-yellow-500";
-            } else if (val?.level === "red") {
-                return "bg-red-500";
-            } else if (val?.level === "orange") {
-                return "bg-orange-500";
-            }
-            return "";
-        };
+    const getColorBadge = (val) => {
+        if (val?.level === "green") {
+            return "bg-green-500";
+        } else if (val?.level === "black") {
+            return "bg-gray-700";
+        } else if (val?.level === "yellow") {
+            return "bg-yellow-500";
+        } else if (val?.level === "red") {
+            return "bg-red-500";
+        } else if (val?.level === "orange") {
+            return "bg-orange-500";
+        }
+        return "";
+    };
 
     return (
         <Card className="p-3 relative ">
@@ -31,7 +30,9 @@ const Patient = ({ data }) => {
                     </div>
                 </div>
 
-                <div className={`w-5 h-5 rounded-full ${getColorBadge(data)}`} />
+                <div
+                    className={`w-5 h-5 rounded-full ${getColorBadge(data)}`}
+                />
             </div>
 
             <Separator className="my-4" />
@@ -71,11 +72,9 @@ const Patient = ({ data }) => {
                 </div>
             </div>
 
-            <div className="mt-5 border rounded-md relative p-3">
-                <p className="text-[#ababab] left-2 absolute top-[-13px] bg-white px-1">
-                    Alamat
-                </p>
-                <p className="text-[#ababab]">{data?.patient?.address}</p>
+            <div className="mt-3">
+                <p className="text-[#ababab]  bg-white px-1">Alamat</p>
+                <p className="text-[#ababab] ml-2">{data?.patient?.address}</p>
             </div>
         </Card>
     );
