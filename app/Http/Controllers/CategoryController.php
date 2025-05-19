@@ -4,36 +4,58 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a paginated listing of the resource.
      */
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $page = $request->input('page', 1);
+        $length = $request->input('length', 10);
 
-        $data = Category::when($search, function ($query, $search) {
+        $query = Category::when($search, function ($query, $search) {
             $query->where('name', 'like', "%{$search}%");
-        })->latest()->get();
+        })->latest();
 
-        return Inertia::render('Admin/Category', [
-            'data' => $data,
-            'filters' => [
-                'search' => $search
-            ],
-            'title' => 'Kategori Triase',
+        $categories = $query->paginate($length, ['*'], 'page', $page);
+
+        return response()->json([
+            'success' => true,
+            'data' => $categories->items(),
+            'meta' => [
+                'current_page' => $categories->currentPage(),
+                'last_page' => $categories->lastPage(),
+                'per_page' => $categories->perPage(),
+                'total' => $categories->total(),
+            ]
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Get all categories without pagination (for dropdown, etc).
      */
-    public function create()
+    public function getAll()
     {
-        //
+        $categories = Category::latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $categories,
+        ]);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Category $category)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $category,
+        ]);
     }
 
     /**
@@ -46,27 +68,19 @@ class CategoryController extends Controller
         ]);
 
         try {
-            Category::create($validatedData);
-            return redirect()->back()->with('success', 'Category created successfully!');
+            $category = Category::create($validatedData);
+            return response()->json([
+                'success' => true,
+                'message' => 'Category created successfully!',
+                'data' => $category,
+            ]);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create category.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
     }
 
     /**
@@ -80,9 +94,17 @@ class CategoryController extends Controller
 
         try {
             $category->update($validatedData);
-            return redirect()->back()->with('success', 'Category updated successfully!');
+            return response()->json([
+                'success' => true,
+                'message' => 'Category updated successfully!',
+                'data' => $category,
+            ]);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update category.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -93,9 +115,16 @@ class CategoryController extends Controller
     {
         try {
             $category->delete();
-            return redirect()->back()->with('success', 'Category deleted successfully!');
+            return response()->json([
+                'success' => true,
+                'message' => 'Category deleted successfully!',
+            ]);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to delete Category: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete category.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 }

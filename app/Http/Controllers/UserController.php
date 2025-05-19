@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    // Index Method: Menampilkan daftar pengguna
+    /**
+     * Display a listing of users with pagination and search.
+     */
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $perPage = $request->input('length', 10);
+        $page = $request->input('page', 1);
 
-        $data = User::where('id', '!=', auth()->id())
+        $query = User::where('id', '!=', auth()->id())
             ->when($search, function ($query, $search) {
                 $query->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%{$search}%")
@@ -24,22 +27,38 @@ class UserController extends Controller
                         ->orWhere('address', 'like', "%{$search}%")
                         ->orWhere('role', 'like', "%{$search}%");
                 });
-            })
-            ->latest()
-            ->get();
+            })->latest();
 
-        return Inertia::render('Admin/Users', [
-            'data' => $data,
-            'filters' => [
-                'search' => $search
-            ],
-            'title' => 'Daftar Pengguna',
+        $users = $query->paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json([
+            'success' => true,
+            'data' => $users->items(),
+            'meta' => [
+                'current_page' => $users->currentPage(),
+                'last_page' => $users->lastPage(),
+                'per_page' => $users->perPage(),
+                'total' => $users->total(),
+            ]
         ]);
     }
 
+    /**
+     * Show a single user.
+     */
+    public function show(User $user)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $user,
+        ]);
+    }
+
+    /**
+     * Store a new user.
+     */
     public function store(Request $request)
     {
-        // Validasi data input
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
@@ -51,19 +70,27 @@ class UserController extends Controller
             'address' => 'required|string|max:255',
         ]);
 
-        // Hash password
         $validatedData['password'] = Hash::make($validatedData['password']);
 
-
         try {
-            User::create($validatedData);
-
-            return redirect()->back()->with('success', 'User created successfully!');
+            $user = User::create($validatedData);
+            return response()->json([
+                'success' => true,
+                'message' => 'User created successfully!',
+                'data' => $user,
+            ]);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create user.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
+    /**
+     * Update an existing user.
+     */
     public function update(Request $request, User $user)
     {
         $validatedData = $request->validate([
@@ -75,22 +102,39 @@ class UserController extends Controller
             'address' => 'required|string|max:255',
         ]);
 
-
         try {
             $user->update($validatedData);
-
-            return redirect()->back()->with('success', 'User created successfully!');
+            return response()->json([
+                'success' => true,
+                'message' => 'User updated successfully!',
+                'data' => $user,
+            ]);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update user.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
+
+    /**
+     * Delete a user.
+     */
     public function destroy(User $user)
     {
         try {
             $user->delete();
-            return redirect()->back()->with('success', 'User deleted successfully!');
+            return response()->json([
+                'success' => true,
+                'message' => 'User deleted successfully!',
+            ]);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to delete User: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete user.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 }

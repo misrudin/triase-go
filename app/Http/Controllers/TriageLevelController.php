@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\TriageLevel;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class TriageLevelController extends Controller
 {
@@ -14,27 +13,36 @@ class TriageLevelController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $page = $request->input('page', 1);
+        $length = $request->input('length', 10);
 
-        $triageLevels = TriageLevel::when($search, function ($query, $search) {
+        $query = TriageLevel::when($search, function ($query, $search) {
             $query->where('level', 'like', "%{$search}%")
                 ->orWhere('description', 'like', "%{$search}%");
-        })->latest()->get();
+        })->latest();
 
-        return Inertia::render('Admin/TriageLevel', [
-            'data' => $triageLevels,
-            'filters' => [
-                'search' => $search
+        $triageLevels = $query->paginate($length, ['*'], 'page', $page);
+
+        return response()->json([
+            'success' => true,
+            'data' => $triageLevels->items(),
+            'meta' => [
+                'current_page' => $triageLevels->currentPage(),
+                'last_page' => $triageLevels->lastPage(),
+                'per_page' => $triageLevels->perPage(),
+                'total' => $triageLevels->total(),
             ],
-            'title' => 'Level Triase',
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function getAll()
     {
-        //
+        $triageLevels = TriageLevel::latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $triageLevels,
+        ]);
     }
 
     /**
@@ -45,14 +53,23 @@ class TriageLevelController extends Controller
         $validatedData = $request->validate([
             'level' => 'required|string|max:255|unique:triage_levels,level',
             'description' => 'required|string|max:500',
+            'priority' => 'required|integer|min:0',
         ]);
 
         try {
-            TriageLevel::create($validatedData);
+            $triageLevel = TriageLevel::create($validatedData);
 
-            return redirect()->back()->with('success', 'Triage Level created successfully!');
+            return response()->json([
+                'success' => true,
+                'message' => 'Triage Level created successfully!',
+                'data' => $triageLevel,
+            ], 201);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create Triage Level',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -61,15 +78,10 @@ class TriageLevelController extends Controller
      */
     public function show(TriageLevel $triageLevel)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TriageLevel $triageLevel)
-    {
-        //
+        return response()->json([
+            'success' => true,
+            'data' => $triageLevel,
+        ]);
     }
 
     /**
@@ -78,16 +90,25 @@ class TriageLevelController extends Controller
     public function update(Request $request, TriageLevel $triageLevel)
     {
         $validatedData = $request->validate([
-            'level' => 'required|string|max:255',
+            'level' => 'required|string|max:255|unique:triage_levels,level,' . $triageLevel->id,
             'description' => 'nullable|string|max:500',
+            'priority' => 'required|integer|min:0',
         ]);
 
         try {
             $triageLevel->update($validatedData);
 
-            return redirect()->back()->with('success', 'Triage Level created successfully!');
+            return response()->json([
+                'success' => true,
+                'message' => 'Triage Level updated successfully!',
+                'data' => $triageLevel,
+            ]);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update Triage Level',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -98,9 +119,17 @@ class TriageLevelController extends Controller
     {
         try {
             $triageLevel->delete();
-            return redirect()->back()->with('success', 'Triage Level deleted successfully!');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Triage Level deleted successfully!',
+            ]);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to delete Triage Level: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete Triage Level',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 }

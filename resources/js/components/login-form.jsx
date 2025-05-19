@@ -2,18 +2,35 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import ErrorMessage from "./ui/error-message";
+import { useToast } from "@/hooks/use-toast";
 
 export function LoginForm({ className, ...props }) {
     const { data, setData, post, processing, errors } = useForm({
         email: "",
         password: "",
     });
+    const { toast } = useToast();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("login"));
+        post(route("login"), {
+            onSuccess: (res) => {
+                router.replace("/", {
+                    preserveState: false,
+                });
+            },
+            onError: (errors) => {
+                const message = Object.keys(errors).map((key) => {
+                    return errors[key];
+                });
+                toast({
+                    variant: "destructive",
+                    description: message?.join(", "),
+                });
+            },
+        });
     };
     return (
         <div className={cn("w-full flex flex-col gap-6", className)} {...props}>

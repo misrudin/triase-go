@@ -10,6 +10,11 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        <!-- PWA  -->
+        <meta name="theme-color" content="#FFF"/>
+        <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
+        <link rel="manifest" href="{{ asset('/manifest.json') }}">
+
         <!-- Scripts -->
         @routes
         {{-- @viteReactRefresh --}}
@@ -63,5 +68,21 @@
     </head>
     <body class="font-sans antialiased bg-slate-50">
         @inertia
+
+        <script src="{{ asset('/sw.js') }}"></script>
+        <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("/sw.js").then(
+            (registration) => {
+                console.log("Service worker registration succeeded:", registration);
+            },
+            (error) => {
+                console.error(`Service worker registration failed: ${error}`);
+            },
+            );
+        } else {
+            console.error("Service workers are not supported.");
+        }
+        </script>
     </body>
 </html>

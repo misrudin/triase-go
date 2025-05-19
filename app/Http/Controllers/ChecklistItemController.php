@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\ChecklistItem;
-use App\Models\TriageLevel;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class ChecklistItemController extends Controller
 {
@@ -16,8 +13,10 @@ class ChecklistItemController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $page = $request->input('page', 1);
+        $length = $request->input('length', 10);
 
-        $data = ChecklistItem::with('triageLevel')->with('category')
+        $query = ChecklistItem::with(['triageLevel', 'category'])
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhereHas('triageLevel', function ($query) use ($search) {
@@ -27,30 +26,31 @@ class ChecklistItemController extends Controller
                         $query->where('name', 'like', "%{$search}%");
                     })
                     ->orWhere('description', 'like', "%{$search}%");
-            })->latest()->get();
+            })->latest();
 
-        $levels = TriageLevel::latest()->get();
-        $categories = Category::latest()->get();
+        $data = $query->paginate($length, ['*'], 'page', $page);
 
-        return Inertia::render('Admin/ChecklistItem', [
-            'data' => $data,
-            'filters' => [
-                'search' => $search
+        return response()->json([
+            'success' => true,
+            'data' => $data->items(),
+            'meta' => [
+                'current_page' => $data->currentPage(),
+                'last_page' => $data->lastPage(),
+                'per_page' => $data->perPage(),
+                'total' => $data->total(),
             ],
-            'levels' => $levels,
-            'categories' => $categories,
-            'title' => 'Master Data Checklist',
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function getAll()
     {
-        //
-    }
+        $data = ChecklistItem::latest()->get();
 
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -64,10 +64,19 @@ class ChecklistItemController extends Controller
         ]);
 
         try {
-            ChecklistItem::create($validatedData);
-            return redirect()->back()->with('success', 'Checklist Item created successfully!');
+            $item = ChecklistItem::create($validatedData);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Checklist Item created successfully!',
+                'data' => $item->load(['triageLevel', 'category']),
+            ], 201);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create Checklist Item',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -76,15 +85,10 @@ class ChecklistItemController extends Controller
      */
     public function show(ChecklistItem $checklistItem)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ChecklistItem $checklistItem)
-    {
-        //
+        return response()->json([
+            'success' => true,
+            'data' => $checklistItem->load(['triageLevel', 'category']),
+        ]);
     }
 
     /**
@@ -101,9 +105,18 @@ class ChecklistItemController extends Controller
 
         try {
             $checklistItem->update($validatedData);
-            return redirect()->back()->with('success', 'Checklist Item updated successfully!');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Checklist Item updated successfully!',
+                'data' => $checklistItem->load(['triageLevel', 'category']),
+            ]);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update Checklist Item',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -114,9 +127,17 @@ class ChecklistItemController extends Controller
     {
         try {
             $checklistItem->delete();
-            return redirect()->back()->with('success', 'Checklist Item deleted successfully!');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Checklist Item deleted successfully!',
+            ]);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to delete Checklist Item: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete Checklist Item',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 }

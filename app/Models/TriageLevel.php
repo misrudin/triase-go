@@ -12,6 +12,7 @@ class TriageLevel extends Model
     protected $fillable = [
         'level',
         'description',
+        'priority',
     ];
 
     public function checklistItems()
